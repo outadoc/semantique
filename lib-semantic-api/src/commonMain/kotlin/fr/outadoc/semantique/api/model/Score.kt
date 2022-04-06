@@ -1,6 +1,6 @@
 package fr.outadoc.semantique.api.model
 
-class Score(
+data class Score(
     val rank: Long,
     val percentile: Int?,
     val score: Double,
