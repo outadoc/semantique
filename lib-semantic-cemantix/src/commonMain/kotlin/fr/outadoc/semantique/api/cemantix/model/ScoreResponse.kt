@@ -8,7 +8,7 @@ data class ScoreResponse(
     @SerialName("num")
     val rank: Long,
     @SerialName("percentile")
-    val percentile: Int?,
+    val percentile: Int? = null,
     @SerialName("score")
     val score: Float,
     @SerialName("solvers")
