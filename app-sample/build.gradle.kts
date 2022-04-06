@@ -14,5 +14,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":lib-semantic-cemantix"))
 
+    implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("io.ktor:ktor-client-logging:1.6.8")
 }

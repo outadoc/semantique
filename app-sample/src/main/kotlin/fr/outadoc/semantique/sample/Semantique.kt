@@ -15,7 +15,7 @@ fun main() = runBlocking {
                 install(JsonFeature)
                 install(Logging) {
                     logger = Logger.DEFAULT
-                    level = LogLevel.HEADERS
+                    level = LogLevel.ALL
                 }
             }
         )
@@ -23,5 +23,5 @@ fun main() = runBlocking {
 
     println(api.getScore("continent"))
     println(api.getStats("continent"))
-    println(api.getNearby("continent"))
+    println(api.getNearby("continental"))
 }

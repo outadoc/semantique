@@ -1,5 +1,6 @@
 package fr.outadoc.semantique.api.cemantix
 
+import fr.outadoc.semantique.api.cemantix.model.NearbyItem
 import fr.outadoc.semantique.api.cemantix.model.ScoreResponse
 import fr.outadoc.semantique.api.cemantix.model.StatsResponse
 import io.ktor.client.*
@@ -13,25 +14,26 @@ class CemantixServer(private val client: HttpClient) {
         val BASE_URL = Url("https://cemantix.herokuapp.com")
     }
 
-    suspend fun getStats(word: String): StatsResponse {
-        return client.get(BASE_URL.copy(encodedPath = "/stats")) {
+    suspend fun getStats(word: String): StatsResponse =
+        client.get(BASE_URL.copy(encodedPath = "/stats")) {
             parameter("word", word)
         }
-    }
 
-    suspend fun getScore(word: String): ScoreResponse {
-        return client.post(BASE_URL.copy(encodedPath = "/score")) {
+    suspend fun getScore(word: String): ScoreResponse =
+        client.post(BASE_URL.copy(encodedPath = "/score")) {
             body = FormDataContent(
                 Parameters.build {
                     append("word", word)
                 }
             )
         }
-    }
 
-    suspend fun getNearby(word: String): List<List<Any>> {
-        return client.get(BASE_URL.copy(encodedPath = "/nearby")) {
-            parameter("word", word)
+    suspend fun getNearby(word: String): List<NearbyItem> =
+        client.post(BASE_URL.copy(encodedPath = "/nearby")) {
+            body = FormDataContent(
+                Parameters.build {
+                    append("word", word)
+                }
+            )
         }
-    }
 }
