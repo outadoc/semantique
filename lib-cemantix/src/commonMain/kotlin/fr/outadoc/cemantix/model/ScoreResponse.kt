@@ -1,4 +1,4 @@
-package fr.outadoc.semantique.api.cemantix.model
+package fr.outadoc.cemantix.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

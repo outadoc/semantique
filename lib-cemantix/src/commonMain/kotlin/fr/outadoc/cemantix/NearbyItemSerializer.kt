@@ -1,6 +1,6 @@
-package fr.outadoc.semantique.api.cemantix
+package fr.outadoc.cemantix
 
-import fr.outadoc.semantique.api.cemantix.model.NearbyItem
+import fr.outadoc.cemantix.model.NearbyItem
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.*
@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
 
-object NearbyItemSerializer : KSerializer<NearbyItem> {
+internal object NearbyItemSerializer : KSerializer<NearbyItem> {
 
     @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = listSerialDescriptor<String>()

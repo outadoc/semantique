@@ -6,9 +6,6 @@ plugins {
     id("org.jetbrains.compose") version "1.0.1"
 }
 
-group = "fr.outadoc"
-version = "1.0"
-
 kotlin {
     jvm {
         compilations.all {

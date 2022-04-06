@@ -1,15 +1,16 @@
 package fr.outadoc.semantique.api.cemantix
 
+import fr.outadoc.cemantix.CemantixServer
+import fr.outadoc.cemantix.exception.CemantixApiException
+import fr.outadoc.cemantix.exception.CemantixInvalidTargetWordException
+import fr.outadoc.cemantix.model.*
 import fr.outadoc.semantique.api.SemanticApi
-import fr.outadoc.semantique.api.cemantix.model.NearbyItem
-import fr.outadoc.semantique.api.cemantix.model.ScoreResponse
-import fr.outadoc.semantique.api.cemantix.model.StatsResponse
 import fr.outadoc.semantique.api.model.NearbyWord
 import fr.outadoc.semantique.api.model.Score
 import fr.outadoc.semantique.api.model.Stats
 import io.ktor.client.call.*
 
-class CemantixApiImpl(private val cemantixServer: CemantixServer) : SemanticApi {
+class CemantixSemanticApi(private val cemantixServer: CemantixServer) : SemanticApi {
 
     override suspend fun getDayStats(): Stats =
         cemantixServer.getDayStats().toStats()
@@ -28,13 +29,13 @@ class CemantixApiImpl(private val cemantixServer: CemantixServer) : SemanticApi 
         Stats(rank = rank, solvers = solvers)
 
     private fun ScoreResponse.toScore(): Score =
-        if (error != null) throw CemantixApiException(error)
-        else Score(
-            rank = rank,
-            percentile = percentile,
-            score = score!!,
-            solvers = solvers
-        )
+        error?.let { error -> throw CemantixApiException(error) }
+            ?: Score(
+                rank = rank,
+                percentile = percentile,
+                score = score!!,
+                solvers = solvers
+            )
 
     private fun NearbyItem.toNearbyWord(): NearbyWord =
         NearbyWord(word = word, percentile = percentile, score = score)

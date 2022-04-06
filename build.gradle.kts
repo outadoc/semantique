@@ -14,10 +14,10 @@ plugins {
     kotlin("multiplatform") version "1.6.10" apply false
 }
 
-group = "fr.outadoc"
-version = "1.0"
-
 allprojects {
+    group = "fr.outadoc"
+    version = "1.0"
+
     repositories {
         google()
         mavenCentral()

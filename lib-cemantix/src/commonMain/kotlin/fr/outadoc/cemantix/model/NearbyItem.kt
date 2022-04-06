@@ -1,6 +1,6 @@
-package fr.outadoc.semantique.api.cemantix.model
+package fr.outadoc.cemantix.model
 
-import fr.outadoc.semantique.api.cemantix.NearbyItemSerializer
+import fr.outadoc.cemantix.NearbyItemSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = NearbyItemSerializer::class)

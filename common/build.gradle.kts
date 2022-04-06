@@ -6,9 +6,6 @@ plugins {
     id("com.android.library")
 }
 
-group = "fr.outadoc"
-version = "1.0"
-
 kotlin {
     android()
     jvm("desktop") {

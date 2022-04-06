@@ -4,13 +4,6 @@ plugins {
     kotlin("android")
 }
 
-group = "fr.outadoc"
-version = "1.0"
-
-repositories {
-    jcenter()
-}
-
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.3.0")

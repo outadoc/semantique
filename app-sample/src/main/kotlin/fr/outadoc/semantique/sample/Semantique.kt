@@ -1,9 +1,9 @@
 package fr.outadoc.semantique.sample
 
-import fr.outadoc.semantique.api.cemantix.CemantixApiException
-import fr.outadoc.semantique.api.cemantix.CemantixApiImpl
-import fr.outadoc.semantique.api.cemantix.CemantixInvalidTargetWordException
-import fr.outadoc.semantique.api.cemantix.CemantixServer
+import fr.outadoc.cemantix.CemantixServer
+import fr.outadoc.cemantix.exception.CemantixApiException
+import fr.outadoc.cemantix.exception.CemantixInvalidTargetWordException
+import fr.outadoc.semantique.api.cemantix.CemantixSemanticApi
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
@@ -11,7 +11,7 @@ import io.ktor.client.features.logging.*
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
-    val api = CemantixApiImpl(
+    val api = CemantixSemanticApi(
         CemantixServer(
             HttpClient(CIO) {
                 install(JsonFeature)

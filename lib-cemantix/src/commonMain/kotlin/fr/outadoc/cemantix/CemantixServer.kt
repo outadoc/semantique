@@ -1,8 +1,8 @@
-package fr.outadoc.semantique.api.cemantix
+package fr.outadoc.cemantix
 
-import fr.outadoc.semantique.api.cemantix.model.NearbyItem
-import fr.outadoc.semantique.api.cemantix.model.ScoreResponse
-import fr.outadoc.semantique.api.cemantix.model.StatsResponse
+import fr.outadoc.cemantix.model.NearbyItem
+import fr.outadoc.cemantix.model.ScoreResponse
+import fr.outadoc.cemantix.model.StatsResponse
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*

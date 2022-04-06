@@ -1,7 +1,6 @@
 pluginManagement {
     repositories {
         google()
-        jcenter()
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -10,11 +9,13 @@ pluginManagement {
 }
 rootProject.name = "semantique"
 
-
+include(":common")
+include(":common-ui")
 include(":app-android")
 include(":app-desktop")
-include(":common")
-include("lib-semantic-api")
-include("lib-semantic-cemantix")
-include("common-ui")
-include("app-sample")
+
+include(":app-sample")
+
+include(":lib-cemantix")
+include(":lib-semantic-api")
+include(":lib-semantic-api-cemantix")

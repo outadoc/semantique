@@ -1,3 +1,3 @@
-package fr.outadoc.semantique.api.cemantix
+package fr.outadoc.cemantix.exception
 
 class CemantixApiException(htmlMessage: String) : Exception(htmlMessage)
