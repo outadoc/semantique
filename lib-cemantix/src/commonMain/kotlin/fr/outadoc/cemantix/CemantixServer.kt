@@ -2,7 +2,7 @@ package fr.outadoc.cemantix
 
 import fr.outadoc.cemantix.model.NearbyItem
 import fr.outadoc.cemantix.model.ScoreResponse
-import fr.outadoc.cemantix.model.StatsResponse
+import fr.outadoc.cemantix.model.DayStatsResponse
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
@@ -14,7 +14,7 @@ class CemantixServer(private val client: HttpClient) {
         val BASE_URL = Url("https://cemantix.herokuapp.com")
     }
 
-    suspend fun getDayStats(): StatsResponse =
+    suspend fun getDayStats(): DayStatsResponse =
         client.get(BASE_URL.copy(encodedPath = "/stats"))
 
     suspend fun getScore(word: String): ScoreResponse =

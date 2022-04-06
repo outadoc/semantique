@@ -1,7 +1,8 @@
 package fr.outadoc.semantique.api.model
 
-data class NearbyWord(
+data class WordScore(
     val word: String,
+    val score: Float,
     val percentile: Int?,
-    val score: Float
+    val dayStats: DayStats? = null
 )

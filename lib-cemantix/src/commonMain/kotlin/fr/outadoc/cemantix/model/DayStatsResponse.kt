@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StatsResponse(
+data class DayStatsResponse(
     @SerialName("num")
-    val rank: Long,
+    val dayNumber: Long,
     @SerialName("solvers")
-    val solvers: Long
+    val solverCount: Long
 )

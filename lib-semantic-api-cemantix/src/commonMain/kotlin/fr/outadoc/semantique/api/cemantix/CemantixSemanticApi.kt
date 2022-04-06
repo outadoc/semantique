@@ -5,38 +5,44 @@ import fr.outadoc.cemantix.exception.CemantixApiException
 import fr.outadoc.cemantix.exception.CemantixInvalidTargetWordException
 import fr.outadoc.cemantix.model.*
 import fr.outadoc.semantique.api.SemanticApi
-import fr.outadoc.semantique.api.model.NearbyWord
-import fr.outadoc.semantique.api.model.Score
-import fr.outadoc.semantique.api.model.Stats
+import fr.outadoc.semantique.api.model.WordScore
+import fr.outadoc.semantique.api.model.DayStats
 import io.ktor.client.call.*
 
 class CemantixSemanticApi(private val cemantixServer: CemantixServer) : SemanticApi {
 
-    override suspend fun getDayStats(): Stats =
+    override suspend fun getDayStats(): DayStats =
         cemantixServer.getDayStats().toStats()
 
-    override suspend fun getScore(word: String): Score =
-        cemantixServer.getScore(word).toScore()
+    override suspend fun getScore(word: String): WordScore =
+        cemantixServer.getScore(word).toScore(word)
 
-    override suspend fun getNearby(word: String): List<NearbyWord> =
+    override suspend fun getNearby(word: String): List<WordScore> =
         try {
-            cemantixServer.getNearby(word).map { nearby -> nearby.toNearbyWord() }
+            cemantixServer.getNearby(word).map { nearby -> nearby.toScore() }
         } catch (e: NoTransformationFoundException) {
             throw CemantixInvalidTargetWordException(word)
         }
 
-    private fun StatsResponse.toStats(): Stats =
-        Stats(rank = rank, solvers = solvers)
+    private fun DayStatsResponse.toStats(): DayStats =
+        DayStats(dayNumber = dayNumber, solverCount = solverCount)
 
-    private fun ScoreResponse.toScore(): Score =
+    private fun ScoreResponse.toScore(word: String): WordScore =
         error?.let { error -> throw CemantixApiException(error) }
-            ?: Score(
-                rank = rank,
-                percentile = percentile,
+            ?: WordScore(
+                word = word,
                 score = score!!,
-                solvers = solvers
+                percentile = percentile,
+                dayStats = DayStats(
+                    dayNumber = dayNumber,
+                    solverCount = solverCount
+                )
             )
 
-    private fun NearbyItem.toNearbyWord(): NearbyWord =
-        NearbyWord(word = word, percentile = percentile, score = score)
+    private fun NearbyItem.toScore(): WordScore =
+        WordScore(
+            word = word,
+            percentile = percentile,
+            score = score
+        )
 }

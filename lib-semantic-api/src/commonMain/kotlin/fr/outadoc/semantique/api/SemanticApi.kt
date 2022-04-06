@@ -1,11 +1,10 @@
 package fr.outadoc.semantique.api
 
-import fr.outadoc.semantique.api.model.NearbyWord
-import fr.outadoc.semantique.api.model.Score
-import fr.outadoc.semantique.api.model.Stats
+import fr.outadoc.semantique.api.model.WordScore
+import fr.outadoc.semantique.api.model.DayStats
 
 interface SemanticApi {
-    suspend fun getDayStats(): Stats
-    suspend fun getScore(word: String): Score
-    suspend fun getNearby(word: String): List<NearbyWord>
+    suspend fun getDayStats(): DayStats
+    suspend fun getScore(word: String): WordScore
+    suspend fun getNearby(word: String): List<WordScore>
 }

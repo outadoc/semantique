@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ScoreResponse(
     @SerialName("num")
-    val rank: Long,
+    val dayNumber: Long,
     @SerialName("solvers")
-    val solvers: Long,
+    val solverCount: Long,
     @SerialName("percentile")
     val percentile: Int? = null,
     @SerialName("score")
