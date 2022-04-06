@@ -14,4 +14,6 @@ rootProject.name = "semantique"
 include(":app-android")
 include(":app-desktop")
 include(":common")
-
+include("lib-semantic-api")
+include("lib-semantic-cemantix")
+include("common-ui")
