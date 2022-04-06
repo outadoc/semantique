@@ -20,18 +20,14 @@ class CemantixServer(private val client: HttpClient) {
     suspend fun getScore(word: String): ScoreResponse =
         client.post(BASE_URL.copy(encodedPath = "/score")) {
             body = FormDataContent(
-                Parameters.build {
-                    append("word", word)
-                }
+                parametersOf("word", word)
             )
         }
 
     suspend fun getNearby(word: String): List<NearbyItem> =
         client.post(BASE_URL.copy(encodedPath = "/nearby")) {
             body = FormDataContent(
-                Parameters.build {
-                    append("word", word)
-                }
+                parametersOf("word", word)
             )
         }
 }
