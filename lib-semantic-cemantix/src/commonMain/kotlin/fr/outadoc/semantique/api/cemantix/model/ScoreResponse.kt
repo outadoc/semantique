@@ -7,10 +7,12 @@ import kotlinx.serialization.Serializable
 data class ScoreResponse(
     @SerialName("num")
     val rank: Long,
+    @SerialName("solvers")
+    val solvers: Long,
     @SerialName("percentile")
     val percentile: Int? = null,
     @SerialName("score")
-    val score: Float,
-    @SerialName("solvers")
-    val solvers: Long
+    val score: Float? = null,
+    @SerialName("error")
+    val error: String? = null
 )

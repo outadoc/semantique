@@ -1,6 +1,8 @@
 package fr.outadoc.semantique.sample
 
+import fr.outadoc.semantique.api.cemantix.CemantixApiException
 import fr.outadoc.semantique.api.cemantix.CemantixApiImpl
+import fr.outadoc.semantique.api.cemantix.CemantixInvalidTargetWordException
 import fr.outadoc.semantique.api.cemantix.CemantixServer
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -21,7 +23,22 @@ fun main() = runBlocking {
         )
     )
 
+    println(api.getDayStats())
+
+    println(api.getScore("saucisse"))
     println(api.getScore("continent"))
-    println(api.getStats("continent"))
+
+    try {
+        println(api.getScore("sovjsdpofjvsdfv"))
+    } catch (e: CemantixApiException) {
+        e.printStackTrace()
+    }
+
     println(api.getNearby("continental"))
+
+    try {
+        println(api.getNearby("fovsdpofvjsdf"))
+    } catch (e: CemantixInvalidTargetWordException) {
+        e.printStackTrace()
+    }
 }

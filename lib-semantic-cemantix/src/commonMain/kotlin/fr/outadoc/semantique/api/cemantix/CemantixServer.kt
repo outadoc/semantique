@@ -14,10 +14,8 @@ class CemantixServer(private val client: HttpClient) {
         val BASE_URL = Url("https://cemantix.herokuapp.com")
     }
 
-    suspend fun getStats(word: String): StatsResponse =
-        client.get(BASE_URL.copy(encodedPath = "/stats")) {
-            parameter("word", word)
-        }
+    suspend fun getDayStats(): StatsResponse =
+        client.get(BASE_URL.copy(encodedPath = "/stats"))
 
     suspend fun getScore(word: String): ScoreResponse =
         client.post(BASE_URL.copy(encodedPath = "/score")) {
