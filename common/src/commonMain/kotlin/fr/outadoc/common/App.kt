@@ -12,9 +12,7 @@ import androidx.compose.runtime.setValue
 fun App() {
     var text by remember { mutableStateOf("Hello, World!") }
 
-    Button(onClick = {
-        text = "Hello, ${getPlatformName()}"
-    }) {
+    Button(onClick = { text = "Hello world" }) {
         Text(text)
     }
 }
