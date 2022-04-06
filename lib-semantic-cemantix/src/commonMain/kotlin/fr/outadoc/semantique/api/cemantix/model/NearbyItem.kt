@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class NearbyItem(
     val word: String,
     val percentile: Int,
-    val score: Double
+    val score: Float
 )

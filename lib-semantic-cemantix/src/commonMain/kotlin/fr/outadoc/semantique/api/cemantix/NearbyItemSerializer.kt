@@ -22,7 +22,7 @@ object NearbyItemSerializer : KSerializer<NearbyItem> {
         return NearbyItem(
             word = array[0].jsonPrimitive.content,
             percentile = array[1].jsonPrimitive.int,
-            score = array[2].jsonPrimitive.double
+            score = array[2].jsonPrimitive.float
         )
     }
 }
