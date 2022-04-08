@@ -52,10 +52,8 @@ fun main() = application {
         ),
         onCloseRequest = ::exitApplication
     ) {
-        MaterialTheme {
-            withDI(di) {
-                App()
-            }
+        withDI(di) {
+            App()
         }
     }
 }

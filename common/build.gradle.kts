@@ -22,6 +22,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                implementation(compose.materialIconsExtended)
 
                 api(project(":lib-semantic-api"))
                 api("org.kodein.di:kodein-di-framework-compose:7.6.0")

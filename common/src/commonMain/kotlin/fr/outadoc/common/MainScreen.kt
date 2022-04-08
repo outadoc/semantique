@@ -1,11 +1,14 @@
 package fr.outadoc.common
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,10 +16,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import fr.outadoc.common.util.AnimatedNullability
 import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.api.model.WordScore
 
@@ -43,37 +51,47 @@ fun MainList(
     onInputChanged: (String) -> Unit,
     onGuessWordClicked: () -> Unit
 ) {
-    if (state.isLoading) {
-        CircularProgressIndicator()
-    }
-
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(8.dp)) {
-        item(key = "dayStats") {
-            if (state.dayStats != null) {
-                StatsHeader(dayStats = state.dayStats)
-            }
-        }
-
-        item(key = "win") {
-            if (state.winningWord != null) {
-                WinBanner(winningWord = state.winningWord)
-            }
-        }
-
-        item(key = "input") {
-            WordInput(
-                currentInputWord = state.currentInputWord,
-                isLoading = state.isLoading,
-                errorMessage = state.errorMessage,
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        item(key = "header") {
+            Header(
+                modifier = Modifier.padding(bottom = 16.dp),
                 onInputChanged = onInputChanged,
                 onGuessWordClicked = onGuessWordClicked,
+                dayStats = state.dayStats,
+                isLoading = state.isLoading,
+                currentInputWord = state.currentInputWord,
+                errorMessage = state.errorMessage
             )
         }
 
+        item(key = "win") {
+            AnimatedNullability(
+                state.winningWord,
+                enter = fadeIn() + expandHorizontally(),
+                exit = fadeOut() + shrinkHorizontally()
+            ) { winningWord ->
+                WinBanner(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth(),
+                    winningWord = winningWord
+                )
+            }
+        }
+
         item("lastAttempt") {
-            if (state.lastAttempt != null) {
-                WordScoreRow(score = state.lastAttempt)
-                Divider()
+            AnimatedNullability(
+                state.lastAttempt,
+                enter = fadeIn() + expandHorizontally(),
+                exit = fadeOut() + shrinkHorizontally()
+            ) { lastAttempt ->
+                Column {
+                    WordScoreRow(score = lastAttempt)
+                    Divider()
+                }
             }
         }
 
@@ -84,18 +102,73 @@ fun MainList(
 }
 
 @Composable
+fun Header(
+    modifier: Modifier = Modifier,
+    dayStats: DayStats?,
+    isLoading: Boolean,
+    currentInputWord: String,
+    errorMessage: String?,
+    onInputChanged: (String) -> Unit,
+    onGuessWordClicked: () -> Unit
+) {
+    Card(modifier = modifier) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            AnimatedNullability(
+                dayStats,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) { dayStats ->
+                StatsHeader(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    dayStats = dayStats
+                )
+            }
+
+            WordInput(
+                currentInputWord = currentInputWord,
+                isLoading = isLoading,
+                errorMessage = errorMessage,
+                onInputChanged = onInputChanged,
+                onGuessWordClicked = onGuessWordClicked,
+            )
+        }
+    }
+}
+
+@Composable
 fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
     Column(modifier = modifier) {
-        Text("Jour n°%d".format(dayStats.dayNumber))
-        Text("%d personnes ont trouvé le mot d'aujourd'hui.".format(dayStats.solverCount))
+        Text(
+            "Jour n°%d".format(dayStats.dayNumber),
+            style = MaterialTheme.typography.h4
+        )
+
+        Text(
+            "%,d personnes ont trouvé le mot du jour.".format(dayStats.solverCount),
+            style = MaterialTheme.typography.subtitle1
+        )
     }
 }
 
 @Composable
 fun WinBanner(modifier: Modifier = Modifier, winningWord: WordScore) {
-    Column(modifier = modifier) {
-        Text("Bravo !")
-        Text("Le mot du jour était ${winningWord.word}.")
+    Card(modifier = modifier) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                "Bravo ! \uD83C\uDF89",
+                style = MaterialTheme.typography.h5
+            )
+            Text(
+                buildAnnotatedString {
+                    append("Le mot du jour était ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(winningWord.word)
+                    }
+                    append(".")
+                },
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
     }
 }
 
@@ -109,45 +182,65 @@ fun WordInput(
     isLoading: Boolean,
     errorMessage: String?
 ) {
-    Column(modifier) {
-        TextField(
-            value = currentInputWord,
-            label = { Text("Devinez le mot secret") },
-            onValueChange = onInputChanged,
-            enabled = !isLoading,
-            isError = errorMessage != null,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = true,
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions {
-                onGuessWordClicked()
-            },
-            modifier = Modifier.onPreviewKeyEvent { event ->
-                if (event.key == Key.Enter && event.type == KeyEventType.KeyUp) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextField(
+                modifier = Modifier
+                    .height(60.dp)
+                    .weight(1f)
+                    .onPreviewKeyEvent { event ->
+                        if (event.key == Key.Enter && event.type == KeyEventType.KeyUp) {
+                            onGuessWordClicked()
+                            true
+                        } else false
+                    },
+                value = currentInputWord,
+                label = { Text("Devinez le mot secret") },
+                onValueChange = onInputChanged,
+                enabled = !isLoading,
+                isError = errorMessage != null,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions {
                     onGuessWordClicked()
-                    true
-                } else false
-            }
-        )
+                }
+            )
 
-        if (errorMessage != null) {
+            Button(
+                modifier = Modifier
+                    .height(60.dp)
+                    .aspectRatio(1f),
+                onClick = onGuessWordClicked,
+                enabled = !isLoading && currentInputWord.isNotBlank()
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Icon(
+                        Icons.Default.Psychology,
+                        contentDescription = "Deviner ce mot"
+                    )
+                }
+            }
+        }
+
+        AnimatedNullability(errorMessage) { errorMessage ->
             Text(
                 text = errorMessage,
                 color = MaterialTheme.colors.error,
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier.padding(start = 16.dp)
             )
-        }
-
-        Button(
-            onClick = onGuessWordClicked,
-            enabled = !isLoading && currentInputWord.isNotBlank()
-        ) {
-            Text("Deviner")
         }
     }
 }
