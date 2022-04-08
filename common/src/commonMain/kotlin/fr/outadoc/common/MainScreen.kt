@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -91,6 +93,7 @@ fun WinBanner(modifier: Modifier = Modifier, winningWord: WordScore) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WordInput(
     modifier: Modifier = Modifier,
@@ -116,6 +119,12 @@ fun WordInput(
             ),
             keyboardActions = KeyboardActions {
                 onGuessWordClicked()
+            },
+            modifier = Modifier.onPreviewKeyEvent { event ->
+                if (event.key == Key.Enter && event.type == KeyEventType.KeyUp) {
+                    onGuessWordClicked()
+                    true
+                } else false
             }
         )
 

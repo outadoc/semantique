@@ -1,6 +1,9 @@
 import fr.outadoc.common.App
 import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import fr.outadoc.cemantix.CemantixServer
 import fr.outadoc.common.MainComponent
@@ -39,7 +42,16 @@ fun main() = application {
         bindSingleton { MainComponent(GlobalScope, instance()) }
     }
 
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        title = "Sémantique",
+        state = WindowState(
+            size = DpSize(
+                width = 400.dp,
+                height = 750.dp
+            )
+        ),
+        onCloseRequest = ::exitApplication
+    ) {
         MaterialTheme {
             withDI(di) {
                 App()
