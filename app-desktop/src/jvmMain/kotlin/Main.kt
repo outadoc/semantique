@@ -28,7 +28,7 @@ fun main() = application {
                 install(JsonFeature)
                 install(Logging) {
                     logger = Logger.DEFAULT
-                    level = LogLevel.ALL
+                    level = LogLevel.HEADERS
                 }
             }
         }

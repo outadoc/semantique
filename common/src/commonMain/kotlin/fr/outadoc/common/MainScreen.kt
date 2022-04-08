@@ -21,7 +21,7 @@ import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.api.model.WordScore
 
 @Composable
-fun MainScreen(mainComponent: MainComponent) {
+fun MainScreen(modifier: Modifier = Modifier, mainComponent: MainComponent) {
     val state by mainComponent.state.collectAsState()
 
     LaunchedEffect("initial") {
@@ -29,19 +29,25 @@ fun MainScreen(mainComponent: MainComponent) {
     }
 
     MainList(
-        state,
+        modifier = modifier,
+        state = state,
         onInputChanged = mainComponent::onInputChanged,
         onGuessWordClicked = mainComponent::onGuessWordClicked
     )
 }
 
 @Composable
-fun MainList(state: MainComponent.State, onInputChanged: (String) -> Unit, onGuessWordClicked: () -> Unit) {
+fun MainList(
+    modifier: Modifier = Modifier,
+    state: MainComponent.State,
+    onInputChanged: (String) -> Unit,
+    onGuessWordClicked: () -> Unit
+) {
     if (state.isLoading) {
         CircularProgressIndicator()
     }
 
-    LazyColumn(contentPadding = PaddingValues(8.dp)) {
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues(8.dp)) {
         item(key = "dayStats") {
             if (state.dayStats != null) {
                 StatsHeader(dayStats = state.dayStats)
