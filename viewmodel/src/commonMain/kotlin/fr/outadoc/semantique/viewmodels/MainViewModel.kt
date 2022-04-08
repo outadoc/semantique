@@ -2,7 +2,6 @@ package fr.outadoc.semantique.viewmodels
 
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.model.DayStats
-import fr.outadoc.semantique.api.model.WordScore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,9 +16,9 @@ class MainViewModel(
         val currentInputWord: String = "",
         val errorMessage: String? = null,
         val dayStats: DayStats? = null,
-        val guessedWords: List<WordScore> = emptyList(),
-        val latestAttempt: WordScore? = null,
-        val winningWord: WordScore? = null
+        val guessedWords: List<Word> = emptyList(),
+        val latestAttempt: Word? = null,
+        val winningWord: Word? = null
     )
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(State(isLoading = true))
@@ -65,15 +64,19 @@ class MainViewModel(
             try {
                 val score = api.getScore(currentState.currentInputWord)
 
-                val alreadyGuessed = currentState.guessedWords.any { existingScore ->
-                    existingScore.word == score.word
-                }
+                val word = score.toWord(
+                    attemptNumber = (currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber } ?: 0) + 1
+                )
 
-                val guessedWords = if (alreadyGuessed) {
-                    currentState.guessedWords
-                } else {
-                    (currentState.guessedWords + score).sortedByDescending { word -> word.score }
-                }
+                val alreadyGuessed: Boolean =
+                    currentState.guessedWords.any { existingScore ->
+                        existingScore.word == score.word
+                    }
+
+
+                val guessedWords: List<Word> =
+                    if (alreadyGuessed) currentState.guessedWords
+                    else (currentState.guessedWords + word).sortedByDescending { it.score }
 
                 _state.emit(
                     currentState.copy(
@@ -82,8 +85,8 @@ class MainViewModel(
                         errorMessage = null,
                         dayStats = score.dayStats,
                         guessedWords = guessedWords,
-                        latestAttempt = score,
-                        winningWord = guessedWords.firstOrNull { word -> word.score == WINNING_SCORE }
+                        latestAttempt = word,
+                        winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
                     )
                 )
             } catch (e: Exception) {

@@ -31,9 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.api.model.DayStats
-import fr.outadoc.semantique.api.model.WordScore
 import fr.outadoc.semantique.ui.util.AnimatedNullability
 import fr.outadoc.semantique.viewmodels.MainViewModel
+import fr.outadoc.semantique.viewmodels.Word
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
@@ -179,7 +179,7 @@ fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
 }
 
 @Composable
-fun WinBanner(modifier: Modifier = Modifier, winningWord: WordScore) {
+fun WinBanner(modifier: Modifier = Modifier, winningWord: Word) {
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -189,11 +189,14 @@ fun WinBanner(modifier: Modifier = Modifier, winningWord: WordScore) {
 
             Text(
                 buildAnnotatedString {
-                    append("Le mot du jour était ")
+                    append("Vous avez trouvé le mot du jour, ")
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(winningWord.word)
                     }
-                    append(".")
+                    append(", en ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append("${winningWord.attemptNumber} coup(s) !")
+                    }
                 },
                 style = MaterialTheme.typography.subtitle1
             )
@@ -277,7 +280,7 @@ fun WordInput(
 @Composable
 fun WordScoreRow(
     modifier: Modifier = Modifier,
-    score: WordScore,
+    score: Word,
     style: TextStyle,
     emphasize: Boolean = false
 ) {
@@ -289,21 +292,35 @@ fun WordScoreRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.weight(0.5f, fill = true),
+                modifier = Modifier
+                    .weight(0.1f)
+                    .alignByBaseline(),
+                text = "%,d".format(score.attemptNumber),
+                textAlign = TextAlign.End,
+                style = style,
+                fontWeight = fontWeight
+            )
+
+            Text(
+                modifier = Modifier
+                    .weight(0.5f, fill = true)
+                    .alignByBaseline(),
                 text = score.word,
                 style = style,
                 fontWeight = fontWeight
             )
 
             Text(
-                modifier = Modifier.weight(0.2f),
+                modifier = Modifier
+                    .weight(0.2f)
+                    .alignByBaseline(),
                 text = "%.2f".format(score.score),
                 textAlign = TextAlign.End,
                 style = style,
                 fontWeight = fontWeight
             )
 
-            Box(modifier = Modifier.weight(1f)) {
+            Box(modifier = Modifier.weight(0.6f)) {
                 score.percentile?.let { percentile ->
                     LinearProgressIndicator(
                         modifier = Modifier
@@ -314,7 +331,11 @@ fun WordScoreRow(
                 }
             }
 
-            Box(modifier = Modifier.weight(0.2f)) {
+            Box(
+                modifier = Modifier
+                    .weight(0.2f)
+                    .alignByBaseline()
+            ) {
                 score.percentile?.let { percentile ->
                     Text(
                         text = "%d".format(percentile),
