@@ -9,8 +9,9 @@ pluginManagement {
 }
 rootProject.name = "semantique"
 
-include(":common")
 include(":common-ui")
+include(":viewmodel")
+
 include(":app-android")
 include(":app-desktop")
 

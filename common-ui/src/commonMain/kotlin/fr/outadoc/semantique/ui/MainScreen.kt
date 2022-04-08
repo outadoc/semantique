@@ -1,4 +1,4 @@
-package fr.outadoc.common
+package fr.outadoc.semantique.ui
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
@@ -24,30 +24,31 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import fr.outadoc.common.util.AnimatedNullability
+import fr.outadoc.semantique.ui.util.AnimatedNullability
 import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.api.model.WordScore
+import fr.outadoc.semantique.viewmodels.MainViewModel
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier, mainComponent: MainComponent) {
-    val state by mainComponent.state.collectAsState()
+fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
+    val state by mainViewModel.state.collectAsState()
 
     LaunchedEffect("initial") {
-        mainComponent.initialize()
+        mainViewModel.initialize()
     }
 
     MainList(
         modifier = modifier,
         state = state,
-        onInputChanged = mainComponent::onInputChanged,
-        onGuessWordClicked = mainComponent::onGuessWordClicked
+        onInputChanged = mainViewModel::onInputChanged,
+        onGuessWordClicked = mainViewModel::onGuessWordClicked
     )
 }
 
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    state: MainComponent.State,
+    state: MainViewModel.State,
     onInputChanged: (String) -> Unit,
     onGuessWordClicked: () -> Unit
 ) {

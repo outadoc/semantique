@@ -1,4 +1,4 @@
-package fr.outadoc.common
+package fr.outadoc.semantique.viewmodels
 
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.model.DayStats
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainComponent(
+class MainViewModel(
     private val scope: CoroutineScope,
     private val api: SemanticApi
 ) {

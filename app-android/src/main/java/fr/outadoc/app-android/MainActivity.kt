@@ -1,7 +1,7 @@
 package fr.outadoc.app
 
 -android
-import fr.outadoc.common.App
+import fr.outadoc.semantique.ui.App
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity

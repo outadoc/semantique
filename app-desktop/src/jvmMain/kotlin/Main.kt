@@ -1,14 +1,13 @@
-import fr.outadoc.common.App
-import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import fr.outadoc.cemantix.CemantixServer
-import fr.outadoc.common.MainComponent
+import fr.outadoc.semantique.ui.App
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.cemantix.CemantixSemanticApi
+import fr.outadoc.semantique.viewmodels.MainViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
@@ -39,7 +38,7 @@ fun main() = application {
             )
         }
 
-        bindSingleton { MainComponent(GlobalScope, instance()) }
+        bindSingleton { MainViewModel(GlobalScope, instance()) }
     }
 
     Window(

@@ -1,4 +1,4 @@
-package fr.outadoc.common.util
+package fr.outadoc.semantique.ui.util
 
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
