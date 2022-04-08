@@ -1,6 +1,7 @@
 package fr.outadoc.semantique.ui
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,9 +25,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import fr.outadoc.semantique.ui.util.AnimatedNullability
 import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.api.model.WordScore
+import fr.outadoc.semantique.ui.util.AnimatedNullability
 import fr.outadoc.semantique.viewmodels.MainViewModel
 
 @Composable
@@ -45,6 +46,7 @@ fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
@@ -56,7 +58,7 @@ fun MainList(
         modifier = modifier,
         contentPadding = PaddingValues(8.dp)
     ) {
-        item(key = "header") {
+        stickyHeader(key = "header") {
             Header(
                 modifier = Modifier.padding(bottom = 16.dp),
                 onInputChanged = onInputChanged,
@@ -66,9 +68,7 @@ fun MainList(
                 currentInputWord = state.currentInputWord,
                 errorMessage = state.errorMessage
             )
-        }
 
-        item(key = "win") {
             AnimatedNullability(
                 state.winningWord,
                 enter = fadeIn() + expandHorizontally(),
