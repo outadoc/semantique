@@ -105,7 +105,7 @@ fun MainList(
                         )
 
                         WordScoreRow(
-                            modifier = Modifier.padding(start = 16.dp),
+                            modifier = Modifier.padding(start = 8.dp),
                             score = lastAttempt,
                             style = MaterialTheme.typography.body1
                         )
@@ -279,44 +279,44 @@ fun WordScoreRow(
     score: WordScore,
     style: TextStyle
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SelectionContainer {
+    SelectionContainer {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 modifier = Modifier.weight(0.5f, fill = true),
                 text = score.word,
                 style = style
             )
-        }
 
-        Text(
-            modifier = Modifier.weight(0.2f),
-            text = "%.2f".format(score.score),
-            textAlign = TextAlign.End,
-            style = style
-        )
+            Text(
+                modifier = Modifier.weight(0.2f),
+                text = "%.2f".format(score.score),
+                textAlign = TextAlign.End,
+                style = style
+            )
 
-        Box(modifier = Modifier.weight(1f)) {
-            score.percentile?.let { percentile ->
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .height(10.dp)
-                        .fillMaxWidth(),
-                    progress = percentile / 1000f
-                )
+            Box(modifier = Modifier.weight(1f)) {
+                score.percentile?.let { percentile ->
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .height(10.dp)
+                            .fillMaxWidth(),
+                        progress = percentile / 1000f
+                    )
+                }
             }
-        }
 
-        Box(modifier = Modifier.weight(0.2f)) {
-            score.percentile?.let { percentile ->
-                Text(
-                    text = "%d".format(percentile),
-                    textAlign = TextAlign.End,
-                    style = style
-                )
+            Box(modifier = Modifier.weight(0.2f)) {
+                score.percentile?.let { percentile ->
+                    Text(
+                        text = "%d".format(percentile),
+                        textAlign = TextAlign.End,
+                        style = style
+                    )
+                }
             }
         }
     }
