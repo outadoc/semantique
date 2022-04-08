@@ -15,6 +15,7 @@ class MainComponent(
     data class State(
         val isLoading: Boolean,
         val currentInputWord: String = "",
+        val errorMessage: String? = null,
         val dayStats: DayStats? = null,
         val guessedWords: List<WordScore> = emptyList(),
         val lastAttempt: WordScore? = null,
@@ -26,10 +27,16 @@ class MainComponent(
 
     fun initialize() {
         scope.launch {
+            val stats = try {
+                api.getDayStats()
+            } catch (e: Exception) {
+                null
+            }
+
             _state.emit(
                 State(
                     isLoading = false,
-                    dayStats = api.getDayStats()
+                    dayStats = stats
                 )
             )
         }
@@ -55,20 +62,29 @@ class MainComponent(
                 currentState.copy(isLoading = true)
             )
 
-            val guessedWord = currentState.currentInputWord
-            val score = api.getScore(guessedWord)
-            val guessedWords = currentState.guessedWords + score
+            try {
+                val score = api.getScore(currentState.currentInputWord)
+                val guessedWords = currentState.guessedWords + score
 
-            _state.emit(
-                currentState.copy(
-                    isLoading = false,
-                    currentInputWord = "",
-                    dayStats = score.dayStats,
-                    guessedWords = guessedWords,
-                    lastAttempt = score,
-                    winningWord = guessedWords.firstOrNull { word -> word.score == WINNING_SCORE }
+                _state.emit(
+                    currentState.copy(
+                        isLoading = false,
+                        currentInputWord = "",
+                        errorMessage = null,
+                        dayStats = score.dayStats,
+                        guessedWords = guessedWords,
+                        lastAttempt = score,
+                        winningWord = guessedWords.firstOrNull { word -> word.score == WINNING_SCORE }
+                    )
                 )
-            )
+            } catch (e: Exception) {
+                _state.emit(
+                    currentState.copy(
+                        isLoading = false,
+                        errorMessage = e.message
+                    )
+                )
+            }
         }
     }
 

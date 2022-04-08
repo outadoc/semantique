@@ -1,19 +1,14 @@
 package fr.outadoc.common
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -60,13 +55,24 @@ fun MainList(state: MainComponent.State, onInputChanged: (String) -> Unit, onGue
             Column {
                 TextField(
                     value = state.currentInputWord,
+                    label = { Text("Devinez le mot secret") },
                     onValueChange = onInputChanged,
-                    enabled = !state.isLoading
+                    enabled = !state.isLoading,
+                    isError = state.errorMessage != null
                 )
+
+                if (state.errorMessage != null) {
+                    Text(
+                        text = state.errorMessage,
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
 
                 Button(
                     onClick = onGuessWordClicked,
-                    enabled = !state.isLoading
+                    enabled = !state.isLoading && state.currentInputWord.isNotBlank()
                 ) {
                     Text("Deviner")
                 }

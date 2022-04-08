@@ -35,7 +35,7 @@ class CemantixSemanticApi(private val cemantixServer: CemantixServer) : Semantic
                 percentile = percentile,
                 dayStats = DayStats(
                     dayNumber = dayNumber,
-                    solverCount = solverCount
+                    solverCount = solverCount!!
                 )
             )
 
