@@ -64,7 +64,8 @@ class MainComponent(
 
             try {
                 val score = api.getScore(currentState.currentInputWord)
-                val guessedWords = currentState.guessedWords + score
+
+                val guessedWords = (currentState.guessedWords + score).sortedByDescending { word -> word.score }
 
                 _state.emit(
                     currentState.copy(
