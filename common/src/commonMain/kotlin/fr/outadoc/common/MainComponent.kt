@@ -49,7 +49,7 @@ class MainComponent(
     fun onGuessWordClicked() {
         val currentState = _state.value
         if (currentState.isLoading) return
-    
+
         scope.launch {
             _state.emit(
                 currentState.copy(isLoading = true)

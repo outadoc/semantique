@@ -23,9 +23,8 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
 
-                implementation(project(":lib-semantic-api"))
-
-                implementation("com.arkivanov.decompose:decompose:0.5.2")
+                api(project(":lib-semantic-api"))
+                api("org.kodein.di:kodein-di-framework-compose:7.6.0")
             }
         }
         val commonTest by getting {
