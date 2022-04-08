@@ -18,7 +18,7 @@ class MainViewModel(
         val errorMessage: String? = null,
         val dayStats: DayStats? = null,
         val guessedWords: List<WordScore> = emptyList(),
-        val lastAttempt: WordScore? = null,
+        val latestAttempt: WordScore? = null,
         val winningWord: WordScore? = null
     )
 
@@ -82,7 +82,7 @@ class MainViewModel(
                         errorMessage = null,
                         dayStats = score.dayStats,
                         guessedWords = guessedWords,
-                        lastAttempt = score,
+                        latestAttempt = score,
                         winningWord = guessedWords.firstOrNull { word -> word.score == WINNING_SCORE }
                     )
                 )

@@ -90,7 +90,7 @@ fun MainList(
 
         item("lastAttempt") {
             AnimatedNullability(
-                state.lastAttempt,
+                state.latestAttempt,
                 enter = fadeIn() + expandHorizontally(),
                 exit = fadeOut() + shrinkHorizontally()
             ) { lastAttempt ->
@@ -118,7 +118,8 @@ fun MainList(
             WordScoreRow(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 score = score,
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.body2,
+                emphasize = score == state.latestAttempt
             )
 
             if (index < state.guessedWords.lastIndex) {
@@ -277,8 +278,10 @@ fun WordInput(
 fun WordScoreRow(
     modifier: Modifier = Modifier,
     score: WordScore,
-    style: TextStyle
+    style: TextStyle,
+    emphasize: Boolean = false
 ) {
+    val fontWeight = if (emphasize) FontWeight.Bold else FontWeight.Normal
     SelectionContainer {
         Row(
             modifier = modifier.fillMaxWidth(),
@@ -288,14 +291,16 @@ fun WordScoreRow(
             Text(
                 modifier = Modifier.weight(0.5f, fill = true),
                 text = score.word,
-                style = style
+                style = style,
+                fontWeight = fontWeight
             )
 
             Text(
                 modifier = Modifier.weight(0.2f),
                 text = "%.2f".format(score.score),
                 textAlign = TextAlign.End,
-                style = style
+                style = style,
+                fontWeight = fontWeight
             )
 
             Box(modifier = Modifier.weight(1f)) {
@@ -314,7 +319,8 @@ fun WordScoreRow(
                     Text(
                         text = "%d".format(percentile),
                         textAlign = TextAlign.End,
-                        style = style
+                        style = style,
+                        fontWeight = fontWeight
                     )
                 }
             }
