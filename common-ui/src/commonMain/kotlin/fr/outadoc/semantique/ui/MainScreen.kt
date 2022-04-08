@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -94,11 +95,21 @@ fun MainList(
                 exit = fadeOut() + shrinkHorizontally()
             ) { lastAttempt ->
                 Card(modifier = Modifier.padding(bottom = 16.dp)) {
-                    WordScoreRow(
+                    Row(
                         modifier = Modifier.padding(16.dp),
-                        score = lastAttempt,
-                        style = MaterialTheme.typography.body1
-                    )
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.History,
+                            contentDescription = "Last attempt"
+                        )
+
+                        WordScoreRow(
+                            modifier = Modifier.padding(start = 16.dp),
+                            score = lastAttempt,
+                            style = MaterialTheme.typography.body1
+                        )
+                    }
                 }
             }
         }
