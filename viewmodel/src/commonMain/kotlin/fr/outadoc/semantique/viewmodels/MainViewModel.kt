@@ -65,7 +65,15 @@ class MainViewModel(
             try {
                 val score = api.getScore(currentState.currentInputWord)
 
-                val guessedWords = (currentState.guessedWords + score).sortedByDescending { word -> word.score }
+                val alreadyGuessed = currentState.guessedWords.any { existingScore ->
+                    existingScore.word == score.word
+                }
+
+                val guessedWords = if (alreadyGuessed) {
+                    currentState.guessedWords
+                } else {
+                    (currentState.guessedWords + score).sortedByDescending { word -> word.score }
+                }
 
                 _state.emit(
                     currentState.copy(

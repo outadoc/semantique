@@ -45,7 +45,7 @@ fun main() = application {
         title = "Sémantique",
         state = WindowState(
             size = DpSize(
-                width = 400.dp,
+                width = 500.dp,
                 height = 750.dp
             )
         ),
