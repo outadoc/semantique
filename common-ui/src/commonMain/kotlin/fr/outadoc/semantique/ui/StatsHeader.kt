@@ -13,7 +13,7 @@ import fr.outadoc.semantique.api.model.DayStats
 fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
     Column(modifier = modifier) {
         Text(
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 4.dp),
             text = "Jour n°%d".format(dayStats.dayNumber),
             style = MaterialTheme.typography.h5
         )

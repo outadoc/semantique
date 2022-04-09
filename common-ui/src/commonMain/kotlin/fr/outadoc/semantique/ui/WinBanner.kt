@@ -2,6 +2,7 @@ package fr.outadoc.semantique.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.Card
@@ -63,7 +64,8 @@ fun WinBanner(
                         role = Role.Checkbox,
                         onValueChange = onDisplayNeighborsChanged
                     )
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Switch(
