@@ -64,7 +64,7 @@ fun main() = application {
         state = WindowState(
             size = DpSize(
                 width = 500.dp,
-                height = 750.dp
+                height = 850.dp
             )
         ),
         onCloseRequest = ::exitApplication
