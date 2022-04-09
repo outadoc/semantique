@@ -16,10 +16,10 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common-ui"))
-                implementation(project(":lib-storage"))
                 implementation(compose.desktop.currentOs)
 
+                implementation(project(":common-ui"))
+                implementation(project(":lib-storage"))
                 implementation(project(":lib-semantic-api-cemantix"))
 
                 implementation("ch.qos.logback:logback-classic:1.2.11")
