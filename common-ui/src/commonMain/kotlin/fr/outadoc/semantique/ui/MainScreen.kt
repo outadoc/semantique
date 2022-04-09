@@ -12,7 +12,7 @@ fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
     val state by mainViewModel.state.collectAsState()
 
     LaunchedEffect(mainViewModel) {
-        mainViewModel.initialize()
+        mainViewModel.onStart()
     }
 
     MainList(

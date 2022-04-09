@@ -29,29 +29,33 @@ class MainViewModel(
     private val _state: MutableStateFlow<State> = MutableStateFlow(State(isLoading = true))
     val state = _state.asStateFlow()
 
-    fun initialize() {
+    fun onStart() {
         scope.launch {
-            try {
-                val stats = api.getDayStats()
-                val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
+            initializeDay()
+        }
+    }
 
-                val guessedWords = previousAttempts
-                    .map { attempt -> attempt.toWord() }
-                    .sortedByDescending { it.score }
+    private suspend fun initializeDay() {
+        try {
+            val stats = api.getDayStats()
+            val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
 
-                _state.emit(
-                    State(
-                        isLoading = false,
-                        dayStats = stats,
-                        guessedWords = guessedWords,
-                        winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
-                    )
+            val guessedWords = previousAttempts
+                .map { attempt -> attempt.toWord() }
+                .sortedByDescending { it.score }
+
+            _state.emit(
+                State(
+                    isLoading = false,
+                    dayStats = stats,
+                    guessedWords = guessedWords,
+                    winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
                 )
-            } catch (e: Exception) {
-                _state.emit(
-                    State(isLoading = false)
-                )
-            }
+            )
+        } catch (e: Exception) {
+            _state.emit(
+                State(isLoading = false)
+            )
         }
     }
 
@@ -102,7 +106,10 @@ class MainViewModel(
                     val guessedWords = (currentState.guessedWords + word)
                         .sortedByDescending { it.score }
 
-                    score.dayStats?.dayNumber?.let { dayNumber ->
+                    val currentDayNumber = currentState.dayStats?.dayNumber
+                    val guessedDayNumber = score.dayStats?.dayNumber
+
+                    guessedDayNumber?.let { dayNumber ->
                         storage.addAttempt(word.toAttempt(dayNumber))
                     }
 
@@ -117,6 +124,13 @@ class MainViewModel(
                             winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
                         )
                     )
+
+                    if (currentDayNumber != null && guessedDayNumber != null
+                        && guessedDayNumber > currentDayNumber
+                    ) {
+                        // New day, new game!
+                        initializeDay()
+                    }
                 }
 
             } catch (e: Exception) {
