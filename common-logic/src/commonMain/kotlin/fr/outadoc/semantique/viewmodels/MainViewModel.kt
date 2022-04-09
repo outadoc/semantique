@@ -123,7 +123,8 @@ class MainViewModel(
                 _state.emit(
                     currentState.copy(
                         isLoading = false,
-                        errorMessage = e.message
+                        errorMessage = e.message,
+                        currentInputWord = inputWord
                     )
                 )
             }

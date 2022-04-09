@@ -12,7 +12,7 @@ fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
     Column(modifier = modifier) {
         Text(
             "Jour n°%d".format(dayStats.dayNumber),
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h5
         )
 
         Text(
