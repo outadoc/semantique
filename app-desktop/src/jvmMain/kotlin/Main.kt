@@ -17,6 +17,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.logging.*
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
@@ -44,9 +45,8 @@ fun main() = application {
 
         bindSingleton<Storage> {
             StorageImpl(
-                SemantiqueDatabase(
-                    DriverFactory().createDriver()
-                )
+                database = SemantiqueDatabase(DriverFactory().createDriver()),
+                ioDispatcher = Dispatchers.IO
             )
         }
 
