@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.model.Word
 
@@ -47,6 +48,8 @@ fun WordScoreRow(
                     .weight(0.4f, fill = true)
                     .alignByBaseline(),
                 text = score.word,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 style = style,
                 fontWeight = fontWeight
             )
