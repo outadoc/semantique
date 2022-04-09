@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.squareup.sqldelight:gradle-plugin:1.5.3")
     }
 }
 
