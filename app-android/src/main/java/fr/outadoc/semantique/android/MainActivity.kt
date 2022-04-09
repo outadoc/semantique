@@ -59,10 +59,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            MaterialTheme {
-                withDI(di) {
-                    App()
-                }
+            withDI(di) {
+                App()
             }
         }
     }
