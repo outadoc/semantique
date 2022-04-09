@@ -44,7 +44,7 @@ fun WordScoreRow(
 
             Text(
                 modifier = Modifier
-                    .weight(0.5f, fill = true)
+                    .weight(0.4f, fill = true)
                     .alignByBaseline(),
                 text = score.word,
                 style = style,
@@ -61,7 +61,7 @@ fun WordScoreRow(
                 fontWeight = fontWeight
             )
 
-            Box(modifier = Modifier.weight(0.6f)) {
+            Box(modifier = Modifier.weight(0.5f)) {
                 score.percentile?.let { percentile ->
                     val progress = remember { Animatable(0f) }
                     LaunchedEffect(score) {
