@@ -7,8 +7,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -31,6 +37,12 @@ fun WordInput(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            val focusRequester = remember { FocusRequester() }
+
+            SideEffect {
+                focusRequester.captureFocus()
+            }
+
             TextField(
                 modifier = Modifier
                     .height(60.dp)
@@ -40,7 +52,8 @@ fun WordInput(
                             onGuessWordClicked()
                             true
                         } else false
-                    },
+                    }
+                    .focusRequester(focusRequester),
                 value = currentInputWord,
                 label = { Text("Devinez le mot secret") },
                 onValueChange = onInputChanged,
