@@ -4,7 +4,12 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
+
 
     sourceSets {
         val commonMain by getting {

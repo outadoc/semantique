@@ -89,7 +89,7 @@ fun MainList(
 
         itemsIndexed(state.guessedWords, key = { _, score -> score.word }) { index, score ->
             WordScoreRow(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 8.dp),
                 score = score,
                 style = MaterialTheme.typography.body2,
                 emphasize = score == state.latestAttempt
