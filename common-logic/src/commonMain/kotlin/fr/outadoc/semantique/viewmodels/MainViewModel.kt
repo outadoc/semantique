@@ -23,10 +23,12 @@ class MainViewModel(
         val guessedWords: List<Word> = emptyList(),
         val neighbors: List<Word>? = null,
         val latestAttempt: Word? = null,
-        val winningWord: Word? = null
+        val winningWord: Word? = null,
+        val displayNeighbors: Boolean = false
     ) {
         val displayedWords: List<Word> =
             neighbors
+                .takeIf { displayNeighbors }
                 .orEmpty()
                 .filterNot { neighbor ->
                     guessedWords.any { guess -> guess.word == neighbor.word }
@@ -180,6 +182,19 @@ class MainViewModel(
                     )
                 )
             }
+        }
+    }
+
+    fun onDisplayNeighborsToggled(displayNeighbors: Boolean) {
+        val currentState = _state.value
+        if (currentState.neighbors == null) return
+
+        scope.launch {
+            _state.emit(
+                currentState.copy(
+                    displayNeighbors = displayNeighbors
+                )
+            )
         }
     }
 

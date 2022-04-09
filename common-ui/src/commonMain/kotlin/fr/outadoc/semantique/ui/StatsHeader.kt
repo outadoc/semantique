@@ -1,17 +1,20 @@
 package fr.outadoc.semantique.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.api.model.DayStats
 
 @Composable
 fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
     Column(modifier = modifier) {
         Text(
-            "Jour n°%d".format(dayStats.dayNumber),
+            modifier = Modifier.padding(bottom = 8.dp),
+            text = "Jour n°%d".format(dayStats.dayNumber),
             style = MaterialTheme.typography.h5
         )
 

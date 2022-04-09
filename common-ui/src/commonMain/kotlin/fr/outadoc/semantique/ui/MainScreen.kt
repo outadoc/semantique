@@ -19,6 +19,7 @@ fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
         modifier = modifier,
         state = state,
         onInputChanged = mainViewModel::onInputChanged,
-        onGuessWordClicked = mainViewModel::onGuessWordClicked
+        onGuessWordClicked = mainViewModel::onGuessWordClicked,
+        onDisplayNeighborsChanged = mainViewModel::onDisplayNeighborsToggled
     )
 }

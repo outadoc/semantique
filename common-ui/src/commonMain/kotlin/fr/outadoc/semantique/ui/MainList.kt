@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.ui.util.AnimatedNullability
@@ -24,7 +21,8 @@ fun MainList(
     modifier: Modifier = Modifier,
     state: MainViewModel.State,
     onInputChanged: (String) -> Unit,
-    onGuessWordClicked: () -> Unit
+    onGuessWordClicked: () -> Unit,
+    onDisplayNeighborsChanged: (Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -50,7 +48,9 @@ fun MainList(
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                         .fillMaxWidth(),
-                    winningWord = winningWord
+                    winningWord = winningWord,
+                    displayNeighbors = state.displayNeighbors,
+                    onDisplayNeighborsChanged = onDisplayNeighborsChanged
                 )
             }
         }
