@@ -94,7 +94,8 @@ fun WordScoreRow(
             ) {
                 score.percentile?.let { percentile ->
                     Text(
-                        text = "%d".format(percentile),
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "%,d ‰".format(percentile),
                         textAlign = TextAlign.End,
                         style = style,
                         fontWeight = fontWeight
