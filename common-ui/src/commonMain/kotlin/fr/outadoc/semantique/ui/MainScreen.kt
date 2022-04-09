@@ -11,7 +11,7 @@ import fr.outadoc.semantique.viewmodels.MainViewModel
 fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
     val state by mainViewModel.state.collectAsState()
 
-    LaunchedEffect("initial") {
+    LaunchedEffect(mainViewModel) {
         mainViewModel.initialize()
     }
 

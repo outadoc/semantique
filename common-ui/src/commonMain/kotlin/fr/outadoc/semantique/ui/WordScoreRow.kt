@@ -1,10 +1,15 @@
 package fr.outadoc.semantique.ui
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -50,7 +55,7 @@ fun WordScoreRow(
                 modifier = Modifier
                     .weight(0.2f)
                     .alignByBaseline(),
-                text = "%.2f".format(score.score),
+                text = "%.2f".format(score.score * 100),
                 textAlign = TextAlign.End,
                 style = style,
                 fontWeight = fontWeight
@@ -58,11 +63,23 @@ fun WordScoreRow(
 
             Box(modifier = Modifier.weight(0.6f)) {
                 score.percentile?.let { percentile ->
+                    val progress = remember { Animatable(0f) }
+                    LaunchedEffect(score) {
+                        progress.animateTo(
+                            targetValue = percentile / 1_000f,
+                            animationSpec = tween(
+                                durationMillis = 1_000,
+                                delayMillis = 100,
+                                easing = LinearEasing
+                            )
+                        )
+                    }
+
                     LinearProgressIndicator(
                         modifier = Modifier
                             .height(10.dp)
                             .fillMaxWidth(),
-                        progress = percentile / 1000f
+                        progress = progress.value
                     )
                 }
             }
