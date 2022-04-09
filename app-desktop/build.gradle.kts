@@ -11,8 +11,8 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
         }
-        withJava()
     }
+
     sourceSets {
         val jvmMain by getting {
             dependencies {
@@ -36,9 +36,21 @@ compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            modules("java.sql")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "jvm"
+
+            packageName = "Semantique"
+            version = "1.0.0"
             packageVersion = "1.0.0"
+            copyright = "© 2022 Baptiste Candellier"
+            vendor = "Baptiste Candellier"
+            licenseFile.set(
+                project.rootDir.resolve("LICENSE")
+            )
+
+            windows {
+                menuGroup = "Semantique"
+            }
         }
     }
 }
