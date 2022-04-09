@@ -70,42 +70,55 @@ class MainViewModel(
         val currentState = _state.value
         if (currentState.isLoading) return
 
+        val inputWord = currentState.currentInputWord.trim()
+
+        val alreadyGuessedWord =
+            currentState.guessedWords.firstOrNull { previous ->
+                previous.word == inputWord
+            }
+
         scope.launch {
             _state.emit(
                 currentState.copy(isLoading = true)
             )
 
             try {
-                val score = api.getScore(currentState.currentInputWord)
+                if (alreadyGuessedWord != null) {
+                    _state.emit(
+                        currentState.copy(
+                            isLoading = false,
+                            currentInputWord = "",
+                            errorMessage = null,
+                            latestAttempt = alreadyGuessedWord
+                        )
+                    )
+                } else {
+                    val score = api.getScore(word = inputWord)
 
-                val word = score.toWord(
-                    attemptNumber = (currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber } ?: 0) + 1
-                )
+                    val word = score.toWord(
+                        attemptNumber = (currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber } ?: 0) + 1
+                    )
 
-                val alreadyGuessed: Boolean =
-                    currentState.guessedWords.any { existingScore ->
-                        existingScore.word == score.word
+                    val guessedWords = (currentState.guessedWords + word)
+                        .sortedByDescending { it.score }
+
+                    score.dayStats?.dayNumber?.let { dayNumber ->
+                        storage.addAttempt(word.toAttempt(dayNumber))
                     }
 
-                val guessedWords: List<Word> =
-                    if (alreadyGuessed) currentState.guessedWords
-                    else (currentState.guessedWords + word).sortedByDescending { it.score }
-
-                score.dayStats?.dayNumber?.let { dayNumber ->
-                    storage.addAttempt(word.toAttempt(dayNumber))
+                    _state.emit(
+                        currentState.copy(
+                            isLoading = false,
+                            currentInputWord = "",
+                            errorMessage = null,
+                            dayStats = score.dayStats,
+                            guessedWords = guessedWords,
+                            latestAttempt = word,
+                            winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
+                        )
+                    )
                 }
 
-                _state.emit(
-                    currentState.copy(
-                        isLoading = false,
-                        currentInputWord = "",
-                        errorMessage = null,
-                        dayStats = score.dayStats,
-                        guessedWords = guessedWords,
-                        latestAttempt = word,
-                        winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
-                    )
-                )
             } catch (e: Exception) {
                 _state.emit(
                     currentState.copy(
