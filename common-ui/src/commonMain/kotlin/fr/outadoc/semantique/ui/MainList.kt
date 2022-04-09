@@ -32,7 +32,7 @@ fun MainList(
     ) {
         stickyHeader(key = "header") {
             Header(
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
                 onInputChanged = onInputChanged,
                 onGuessWordClicked = onGuessWordClicked,
                 dayStats = state.dayStats,
@@ -48,7 +48,7 @@ fun MainList(
             ) { winningWord ->
                 WinBanner(
                     modifier = Modifier
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 8.dp)
                         .fillMaxWidth(),
                     winningWord = winningWord
                 )
@@ -61,14 +61,12 @@ fun MainList(
                 enter = fadeIn() + expandHorizontally(),
                 exit = fadeOut() + shrinkHorizontally()
             ) { lastAttempt ->
-                Card(modifier = Modifier.padding(bottom = 16.dp)) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
+                Card(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             "Tentative précédente",
                             style = MaterialTheme.typography.subtitle2,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 12.dp)
                         )
                         WordScoreRow(
                             score = lastAttempt,
@@ -77,6 +75,10 @@ fun MainList(
                     }
                 }
             }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         itemsIndexed(state.guessedWords, key = { _, score -> score.word }) { index, score ->
