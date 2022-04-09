@@ -45,7 +45,7 @@ fun WordScoreRow(
 
             Text(
                 modifier = Modifier
-                    .weight(0.4f, fill = true)
+                    .weight(0.25f)
                     .alignByBaseline(),
                 text = score.word,
                 overflow = TextOverflow.Ellipsis,
@@ -64,7 +64,7 @@ fun WordScoreRow(
                 fontWeight = fontWeight
             )
 
-            Box(modifier = Modifier.weight(0.5f)) {
+            Box(modifier = Modifier.weight(0.25f)) {
                 score.percentile?.let { percentile ->
                     val progress = remember { Animatable(0f) }
                     LaunchedEffect(score) {

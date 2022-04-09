@@ -5,16 +5,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.runtime.Composable
@@ -68,17 +62,15 @@ fun MainList(
                 exit = fadeOut() + shrinkHorizontally()
             ) { lastAttempt ->
                 Card(modifier = Modifier.padding(bottom = 16.dp)) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.padding(16.dp)
                     ) {
-                        Icon(
-                            Icons.Default.History,
-                            contentDescription = "Last attempt"
+                        Text(
+                            "Tentative précédente",
+                            style = MaterialTheme.typography.subtitle2,
+                            modifier = Modifier.padding(bottom = 8.dp)
                         )
-
                         WordScoreRow(
-                            modifier = Modifier.padding(start = 8.dp),
                             score = lastAttempt,
                             style = MaterialTheme.typography.body1
                         )
