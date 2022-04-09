@@ -25,40 +25,40 @@ import org.kodein.di.instance
 
 class MainActivity : AppCompatActivity() {
 
+    private val di = DI {
+        bindSingleton {
+            HttpClient(CIO) {
+                install(JsonFeature)
+            }
+        }
+
+        bindSingleton<SemanticApi> {
+            CemantixSemanticApi(
+                CemantixServer(client = instance())
+            )
+        }
+
+        bindSingleton<Storage> {
+            StorageImpl(
+                database = SemantiqueDatabase(
+                    DriverFactory(applicationContext).createDriver()
+                ),
+                ioDispatcher = Dispatchers.IO
+            )
+        }
+
+        bindSingleton {
+            MainViewModel(
+                scope = lifecycleScope,
+                api = instance(),
+                storage = instance()
+            )
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val di = DI {
-                bindSingleton {
-                    HttpClient(CIO) {
-                        install(JsonFeature)
-                    }
-                }
-
-                bindSingleton<SemanticApi> {
-                    CemantixSemanticApi(
-                        CemantixServer(client = instance())
-                    )
-                }
-
-                bindSingleton<Storage> {
-                    StorageImpl(
-                        database = SemantiqueDatabase(
-                            DriverFactory(applicationContext).createDriver()
-                        ),
-                        ioDispatcher = Dispatchers.IO
-                    )
-                }
-
-                bindSingleton {
-                    MainViewModel(
-                        scope = lifecycleScope,
-                        api = instance(),
-                        storage = instance()
-                    )
-                }
-            }
-
             withDI(di) {
                 App()
             }
