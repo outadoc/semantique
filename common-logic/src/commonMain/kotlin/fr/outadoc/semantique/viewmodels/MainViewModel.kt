@@ -49,7 +49,7 @@ class MainViewModel(
                     isLoading = false,
                     dayStats = stats,
                     guessedWords = guessedWords,
-                    winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
+                    winningWord = guessedWords.findWinningWordOrNull()
                 )
             )
         } catch (e: Exception) {
@@ -99,9 +99,10 @@ class MainViewModel(
                 } else {
                     val score = api.getScore(word = inputWord)
 
-                    val word = score.toWord(
-                        attemptNumber = (currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber } ?: 0) + 1
-                    )
+                    val lastAttemptNumber =
+                        currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber }
+
+                    val word = score.toWord(attemptNumber = (lastAttemptNumber ?: 0) + 1)
 
                     val guessedWords = (currentState.guessedWords + word)
                         .sortedByDescending { it.score }
@@ -121,7 +122,7 @@ class MainViewModel(
                             dayStats = score.dayStats,
                             guessedWords = guessedWords,
                             latestAttempt = word,
-                            winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
+                            winningWord = guessedWords.findWinningWordOrNull()
                         )
                     )
 
@@ -145,7 +146,6 @@ class MainViewModel(
         }
     }
 
-    companion object {
-        const val WINNING_SCORE = 1.0f
-    }
+    private fun List<Word>.findWinningWordOrNull(): Word? =
+        firstOrNull { it.score == 1.0f }
 }
