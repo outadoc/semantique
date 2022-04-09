@@ -1,4 +1,4 @@
-package fr.outadoc.semantique.viewmodels
+package fr.outadoc.semantique.model
 
 import fr.outadoc.semantique.api.model.WordScore
 

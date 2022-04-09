@@ -12,7 +12,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import fr.outadoc.semantique.viewmodels.Word
+import fr.outadoc.semantique.model.Word
 
 @Composable
 fun WinBanner(modifier: Modifier = Modifier, winningWord: Word) {

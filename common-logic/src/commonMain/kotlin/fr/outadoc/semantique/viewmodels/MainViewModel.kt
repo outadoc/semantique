@@ -2,6 +2,8 @@ package fr.outadoc.semantique.viewmodels
 
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.model.DayStats
+import fr.outadoc.semantique.model.Word
+import fr.outadoc.semantique.model.toWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
