@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS Attempt (
+    dayNumber INTEGER NOT NULL,
+    attemptNumber INTEGER AS Int NOT NULL,
+    word TEXT NOT NULL,
+    score REAL AS Float NOT NULL,
+    percentile INTEGER AS Int
+);
+
+CREATE INDEX IF NOT EXISTS idx_attempt_day_number ON Attempt(dayNumber);
+
+getAllAttemptsForDay:
+SELECT * FROM Attempt WHERE dayNumber = ?;
+
+insertAttempt:
+INSERT OR REPLACE INTO Attempt VALUES ?;

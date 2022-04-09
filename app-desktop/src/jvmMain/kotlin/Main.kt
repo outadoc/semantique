@@ -4,9 +4,13 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import fr.outadoc.cemantix.CemantixServer
-import fr.outadoc.semantique.ui.App
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.cemantix.CemantixSemanticApi
+import fr.outadoc.semantique.storage.DriverFactory
+import fr.outadoc.semantique.storage.Storage
+import fr.outadoc.semantique.storage.StorageImpl
+import fr.outadoc.semantique.storage.db.SemantiqueDatabase
+import fr.outadoc.semantique.ui.App
 import fr.outadoc.semantique.viewmodels.MainViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -34,11 +38,25 @@ fun main() = application {
 
         bindSingleton<SemanticApi> {
             CemantixSemanticApi(
-                CemantixServer(instance())
+                CemantixServer(client = instance())
             )
         }
 
-        bindSingleton { MainViewModel(GlobalScope, instance()) }
+        bindSingleton<Storage> {
+            StorageImpl(
+                SemantiqueDatabase(
+                    DriverFactory().createDriver()
+                )
+            )
+        }
+
+        bindSingleton {
+            MainViewModel(
+                scope = GlobalScope,
+                api = instance(),
+                storage = instance()
+            )
+        }
     }
 
     Window(

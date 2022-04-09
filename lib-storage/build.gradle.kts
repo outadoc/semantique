@@ -16,6 +16,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("net.harawata:appdirs:1.2.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation("com.squareup.sqldelight:runtime:1.5.3")
+                implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
             }
         }
         val commonTest by getting {
@@ -29,5 +33,11 @@ kotlin {
                 implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
             }
         }
+    }
+}
+
+sqldelight {
+    database("SemantiqueDatabase") {
+        packageName = "fr.outadoc.semantique.storage.db"
     }
 }

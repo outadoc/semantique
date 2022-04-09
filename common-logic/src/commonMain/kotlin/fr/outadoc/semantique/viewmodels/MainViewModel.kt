@@ -3,7 +3,9 @@ package fr.outadoc.semantique.viewmodels
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.model.Word
+import fr.outadoc.semantique.model.toAttempt
 import fr.outadoc.semantique.model.toWord
+import fr.outadoc.semantique.storage.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val scope: CoroutineScope,
-    private val api: SemanticApi
+    private val api: SemanticApi,
+    private val storage: Storage
 ) {
     data class State(
         val isLoading: Boolean,
@@ -28,18 +31,27 @@ class MainViewModel(
 
     fun initialize() {
         scope.launch {
-            val stats = try {
-                api.getDayStats()
-            } catch (e: Exception) {
-                null
-            }
+            try {
+                val stats = api.getDayStats()
+                val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
 
-            _state.emit(
-                State(
-                    isLoading = false,
-                    dayStats = stats
+                val guessedWords = previousAttempts
+                    .map { attempt -> attempt.toWord() }
+                    .sortedByDescending { it.score }
+
+                _state.emit(
+                    State(
+                        isLoading = false,
+                        dayStats = stats,
+                        guessedWords = guessedWords,
+                        winningWord = guessedWords.firstOrNull { it.score == WINNING_SCORE }
+                    )
                 )
-            )
+            } catch (e: Exception) {
+                _state.emit(
+                    State(isLoading = false)
+                )
+            }
         }
     }
 
@@ -75,10 +87,13 @@ class MainViewModel(
                         existingScore.word == score.word
                     }
 
-
                 val guessedWords: List<Word> =
                     if (alreadyGuessed) currentState.guessedWords
                     else (currentState.guessedWords + word).sortedByDescending { it.score }
+
+                score.dayStats?.dayNumber?.let { dayNumber ->
+                    storage.addAttempt(word.toAttempt(dayNumber))
+                }
 
                 _state.emit(
                     currentState.copy(

@@ -17,6 +17,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common-ui"))
+                implementation(project(":lib-storage"))
                 implementation(compose.desktop.currentOs)
 
                 implementation(project(":lib-semantic-api-cemantix"))

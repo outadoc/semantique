@@ -9,6 +9,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":lib-semantic-api"))
+                implementation(project(":lib-storage"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
             }
         }
