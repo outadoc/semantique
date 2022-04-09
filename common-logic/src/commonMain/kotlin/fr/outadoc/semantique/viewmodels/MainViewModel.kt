@@ -21,9 +21,19 @@ class MainViewModel(
         val errorMessage: String? = null,
         val dayStats: DayStats? = null,
         val guessedWords: List<Word> = emptyList(),
+        val neighbors: List<Word>? = null,
         val latestAttempt: Word? = null,
         val winningWord: Word? = null
-    )
+    ) {
+        val displayedWords: List<Word> =
+            neighbors
+                .orEmpty()
+                .filterNot { neighbor ->
+                    guessedWords.any { guess -> guess.word == neighbor.word }
+                }
+                .plus(guessedWords)
+                .sortedByDescending { it.score }
+    }
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(State(isLoading = true))
     val state = _state.asStateFlow()
@@ -48,14 +58,16 @@ class MainViewModel(
                         percentile = attempt.percentile
                     )
                 }
-                .sortedByDescending { it.score }
+
+            val winningWord = guessedWords.findWinningWordOrNull()
 
             _state.emit(
                 State(
                     isLoading = false,
                     dayStats = stats,
                     guessedWords = guessedWords,
-                    winningWord = guessedWords.findWinningWordOrNull()
+                    neighbors = getNeighbors(winningWord),
+                    winningWord = winningWord
                 )
             )
         } catch (e: Exception) {
@@ -120,7 +132,6 @@ class MainViewModel(
                     )
 
                     val guessedWords = (currentState.guessedWords + word)
-                        .sortedByDescending { it.score }
 
                     val currentDayNumber = currentState.dayStats?.dayNumber
                     val guessedDayNumber = score.dayStats?.dayNumber
@@ -137,6 +148,8 @@ class MainViewModel(
                         )
                     }
 
+                    val winningWord = guessedWords.findWinningWordOrNull()
+
                     _state.emit(
                         currentState.copy(
                             isLoading = false,
@@ -145,7 +158,8 @@ class MainViewModel(
                             dayStats = score.dayStats,
                             guessedWords = guessedWords,
                             latestAttempt = word,
-                            winningWord = guessedWords.findWinningWordOrNull()
+                            winningWord = winningWord,
+                            neighbors = currentState.neighbors ?: getNeighbors(winningWord)
                         )
                     )
 
@@ -168,6 +182,17 @@ class MainViewModel(
             }
         }
     }
+
+    private suspend fun getNeighbors(winningWord: Word?): List<Word>? =
+        if (winningWord == null) null
+        else api.getNearby(winningWord.word).map { neighbor ->
+            Word(
+                attemptNumber = null,
+                word = neighbor.word,
+                score = neighbor.score,
+                percentile = neighbor.percentile
+            )
+        }
 
     private fun List<Word>.findWinningWordOrNull(): Word? =
         firstOrNull { it.score == 1.0f }

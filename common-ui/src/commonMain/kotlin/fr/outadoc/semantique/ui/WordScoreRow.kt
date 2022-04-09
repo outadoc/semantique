@@ -71,7 +71,8 @@ fun WordScoreRow(
             )
 
             Box(modifier = Modifier.weight(0.25f)) {
-                score.percentile?.let { percentile ->
+                val percentile = score.percentile
+                if (percentile != null && score.attemptNumber != null) {
                     val progress = remember { Animatable(0f) }
                     LaunchedEffect(score) {
                         progress.animateTo(

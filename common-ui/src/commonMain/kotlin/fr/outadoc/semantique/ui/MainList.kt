@@ -81,7 +81,7 @@ fun MainList(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        itemsIndexed(state.guessedWords, key = { _, score -> score.word }) { index, score ->
+        itemsIndexed(state.displayedWords, key = { _, score -> score.word }) { index, score ->
             WordScoreRow(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 score = score,
@@ -89,7 +89,7 @@ fun MainList(
                 emphasize = score == state.latestAttempt
             )
 
-            if (index < state.guessedWords.lastIndex) {
+            if (index < state.displayedWords.lastIndex) {
                 Divider(modifier = Modifier.padding(vertical = 6.dp))
             }
         }

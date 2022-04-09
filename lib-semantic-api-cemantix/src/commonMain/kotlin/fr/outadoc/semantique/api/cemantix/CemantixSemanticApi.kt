@@ -43,6 +43,6 @@ class CemantixSemanticApi(private val cemantixServer: CemantixServer) : Semantic
         WordScore(
             word = word,
             percentile = percentile,
-            score = score
+            score = score / 100f
         )
 }
