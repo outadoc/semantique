@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.squareup.sqldelight")
+    id("com.android.library")
 }
 
 group = "fr.outadoc"
@@ -11,6 +12,8 @@ repositories {
 }
 
 kotlin {
+    android()
+
     jvm {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
@@ -37,11 +40,31 @@ kotlin {
                 implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
             }
         }
+        val androidMain by getting {
+            dependencies {
+                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+            }
+        }
     }
 }
 
 sqldelight {
     database("SemantiqueDatabase") {
         packageName = "fr.outadoc.semantique.storage.db"
+    }
+}
+
+android {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+    compileSdk = 31
+    defaultConfig {
+        minSdk = 24
+        targetSdk = 31
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
