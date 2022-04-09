@@ -33,15 +33,21 @@ fun WordScoreRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            Box(
                 modifier = Modifier
                     .weight(0.1f)
-                    .alignByBaseline(),
-                text = "%,d".format(score.attemptNumber),
-                textAlign = TextAlign.End,
-                style = style,
-                fontWeight = fontWeight
-            )
+                    .alignByBaseline()
+            ) {
+                score.attemptNumber?.let { attemptNumber ->
+                    Text(
+                        modifier = Modifier,
+                        text = "%,d".format(attemptNumber),
+                        textAlign = TextAlign.End,
+                        style = style,
+                        fontWeight = fontWeight
+                    )
+                }
+            }
 
             Text(
                 modifier = Modifier

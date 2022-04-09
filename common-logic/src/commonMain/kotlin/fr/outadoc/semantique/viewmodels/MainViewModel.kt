@@ -3,9 +3,8 @@ package fr.outadoc.semantique.viewmodels
 import fr.outadoc.semantique.api.SemanticApi
 import fr.outadoc.semantique.api.model.DayStats
 import fr.outadoc.semantique.model.Word
-import fr.outadoc.semantique.model.toAttempt
-import fr.outadoc.semantique.model.toWord
 import fr.outadoc.semantique.storage.Storage
+import fr.outadoc.semantique.storage.schema.Attempt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +40,14 @@ class MainViewModel(
             val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
 
             val guessedWords = previousAttempts
-                .map { attempt -> attempt.toWord() }
+                .map { attempt ->
+                    Word(
+                        attemptNumber = attempt.attemptNumber,
+                        word = attempt.word,
+                        score = attempt.score,
+                        percentile = attempt.percentile
+                    )
+                }
                 .sortedByDescending { it.score }
 
             _state.emit(
@@ -100,9 +106,18 @@ class MainViewModel(
                     val score = api.getScore(word = inputWord)
 
                     val lastAttemptNumber =
-                        currentState.guessedWords.maxOfOrNull { word -> word.attemptNumber }
+                        currentState.guessedWords.maxOfOrNull { word ->
+                            word.attemptNumber ?: 0
+                        }
 
-                    val word = score.toWord(attemptNumber = (lastAttemptNumber ?: 0) + 1)
+                    val attemptNumber = (lastAttemptNumber ?: 0) + 1
+
+                    val word = Word(
+                        attemptNumber = attemptNumber,
+                        word = score.word,
+                        score = score.score,
+                        percentile = score.percentile
+                    )
 
                     val guessedWords = (currentState.guessedWords + word)
                         .sortedByDescending { it.score }
@@ -111,7 +126,15 @@ class MainViewModel(
                     val guessedDayNumber = score.dayStats?.dayNumber
 
                     guessedDayNumber?.let { dayNumber ->
-                        storage.addAttempt(word.toAttempt(dayNumber))
+                        storage.addAttempt(
+                            Attempt(
+                                dayNumber = dayNumber,
+                                attemptNumber = attemptNumber,
+                                word = score.word,
+                                score = score.score,
+                                percentile = score.percentile
+                            )
+                        )
                     }
 
                     _state.emit(
