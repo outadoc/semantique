@@ -34,22 +34,40 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "fr.outadoc.semantique.desktop.SemantiqueKt"
+
         nativeDistributions {
             modules("java.sql")
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+                TargetFormat.Rpm
+            )
 
             packageName = "Semantique"
             version = "1.0.0"
             packageVersion = "1.0.0"
             copyright = "© 2022 Baptiste Candellier"
             vendor = "Baptiste Candellier"
+
             licenseFile.set(
                 project.rootDir.resolve("LICENSE")
             )
 
             windows {
                 menuGroup = "Semantique"
+                upgradeUuid = "c8c6dd5c-26c5-46d7-9247-f068bb3c35a1"
+            }
+
+            macOS {
+                bundleID = "fr.outadoc.semantique"
+                dockName = "Sémantique"
+            }
+
+            linux {
+                menuGroup = "Game"
+                appCategory = "games"
             }
         }
     }
