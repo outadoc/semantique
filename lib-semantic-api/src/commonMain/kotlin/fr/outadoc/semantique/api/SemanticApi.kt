@@ -1,7 +1,7 @@
 package fr.outadoc.semantique.api
 
-import fr.outadoc.semantique.api.model.WordScore
 import fr.outadoc.semantique.api.model.DayStats
+import fr.outadoc.semantique.api.model.WordScore
 
 interface SemanticApi {
 
@@ -24,4 +24,9 @@ interface SemanticApi {
      * @param word the target word.
      */
     suspend fun getNearby(languageCode: String, word: String): List<WordScore>
+
+    /**
+     * Gets the URI of a help page for this language code.
+     */
+    suspend fun getHelpPageUri(languageCode: String): String
 }

@@ -19,18 +19,27 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val mainViewModel: MainViewModel by instance()
     val state by mainViewModel.state.collectAsState()
 
+    val uriHandler = LocalUriHandler.current
+
     LaunchedEffect(mainViewModel) {
         mainViewModel.onStart()
     }
 
-    val uriHandler = LocalUriHandler.current
+    LaunchedEffect(mainViewModel.events) {
+        mainViewModel.events.collect { event ->
+            when (event) {
+                is MainViewModel.Event.OpenUri -> {
+                    uriHandler.openUri(event.uri)
+                }
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 actions = {
-                    IconButton(
-                        onClick = { uriHandler.openUri("https://cemantix.herokuapp.com/") }
-                    ) {
+                    IconButton(onClick = mainViewModel::onHelpButtonClicked) {
                         Icon(
                             Icons.Default.Help,
                             contentDescription = "Informations sur le jeu"

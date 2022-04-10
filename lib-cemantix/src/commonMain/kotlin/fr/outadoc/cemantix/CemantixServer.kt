@@ -33,4 +33,7 @@ class CemantixServer(private val client: HttpClient) {
                 parametersOf("word", word)
             )
         }
+
+    fun getHelpPageUri(languageCode: String): String =
+        getBaseUrl(languageCode).toString()
 }

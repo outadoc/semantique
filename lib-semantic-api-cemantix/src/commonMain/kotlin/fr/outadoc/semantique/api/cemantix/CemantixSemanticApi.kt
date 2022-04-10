@@ -27,6 +27,9 @@ class CemantixSemanticApi(private val cemantixServer: CemantixServer) : Semantic
             throw CemantixInvalidTargetWordException(word)
         }
 
+    override suspend fun getHelpPageUri(languageCode: String): String =
+        cemantixServer.getHelpPageUri(languageCode = languageCode)
+
     private fun DayStatsResponse.toStats(): DayStats =
         DayStats(dayNumber = dayNumber, solverCount = solverCount)
 

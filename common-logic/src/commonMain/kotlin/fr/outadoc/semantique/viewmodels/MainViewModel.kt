@@ -6,7 +6,9 @@ import fr.outadoc.semantique.model.Word
 import fr.outadoc.semantique.storage.Storage
 import fr.outadoc.semantique.storage.schema.Attempt
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
@@ -39,8 +41,15 @@ class MainViewModel(
                 .sortedByDescending { it.score }
     }
 
+    sealed class Event {
+        data class OpenUri(val uri: String) : Event()
+    }
+
     private val _state: MutableStateFlow<State> = MutableStateFlow(State(isLoading = true))
     val state = _state.asStateFlow()
+
+    private val _events: MutableSharedFlow<Event> = MutableSharedFlow()
+    val events = _events.asSharedFlow()
 
     fun onStart() {
         val currentState = _state.value
@@ -212,6 +221,17 @@ class MainViewModel(
                     )
                 )
             }
+        }
+    }
+
+    fun onHelpButtonClicked() {
+        val currentState = _state.value
+        scope.launch {
+            _events.emit(
+                Event.OpenUri(
+                    api.getHelpPageUri(languageCode = currentState.languageCode)
+                )
+            )
         }
     }
 
