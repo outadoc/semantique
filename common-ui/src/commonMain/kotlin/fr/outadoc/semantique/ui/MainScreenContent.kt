@@ -18,7 +18,7 @@ fun MainScreenContent(
     modifier: Modifier = Modifier,
     state: MainViewModel.State,
     onHelpButtonClicked: () -> Unit,
-    switchLanguage: (String) -> Unit,
+    onLanguageCodeSelected: (String) -> Unit,
     onInputChanged: (String) -> Unit,
     onGuessWordClicked: () -> Unit,
     onDisplayNeighborsToggled: (Boolean) -> Unit
@@ -36,7 +36,7 @@ fun MainScreenContent(
 
                     LanguagePicker(
                         currentLanguageCode = state.languageCode,
-                        onLanguageCodeSelected = switchLanguage,
+                        onLanguageCodeSelected = onLanguageCodeSelected,
                         availableLanguageCodes = listOf(
                             Locale.FRENCH.language,
                             Locale.ENGLISH.language

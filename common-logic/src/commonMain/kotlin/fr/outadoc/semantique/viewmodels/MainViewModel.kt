@@ -60,7 +60,7 @@ class MainViewModel(
         }
     }
 
-    fun switchLanguage(languageCode: String) {
+    fun onLanguageCodeSelected(languageCode: String) {
         scope.launch {
             initializeDay(
                 languageCode = languageCode
