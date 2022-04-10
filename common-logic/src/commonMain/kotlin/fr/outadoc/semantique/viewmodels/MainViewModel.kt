@@ -18,6 +18,7 @@ class MainViewModel(
 ) {
     data class State(
         val isLoading: Boolean,
+        val languageCode: String = Locale.FRENCH.language,
         val currentInputWord: String = "",
         val errorMessage: String? = null,
         val dayStats: DayStats? = null,
@@ -42,12 +43,23 @@ class MainViewModel(
     val state = _state.asStateFlow()
 
     fun onStart() {
+        val currentState = _state.value
         scope.launch {
-            initializeDay()
+            initializeDay(
+                languageCode = currentState.languageCode
+            )
         }
     }
 
-    private suspend fun initializeDay() {
+    fun switchLanguage(languageCode: String) {
+        scope.launch {
+            initializeDay(
+                languageCode = languageCode
+            )
+        }
+    }
+
+    private suspend fun initializeDay(languageCode: String) {
         try {
             val stats = api.getDayStats()
             val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
@@ -142,7 +154,7 @@ class MainViewModel(
                     guessedDayNumber?.let { dayNumber ->
                         storage.addAttempt(
                             Attempt(
-                                languageCode = Locale.FRENCH.language,
+                                languageCode = currentState.languageCode,
                                 dayNumber = dayNumber,
                                 attemptNumber = attemptNumber,
                                 word = score.word,
@@ -171,7 +183,9 @@ class MainViewModel(
                         && guessedDayNumber > currentDayNumber
                     ) {
                         // New day, new game!
-                        initializeDay()
+                        initializeDay(
+                            languageCode = currentState.languageCode
+                        )
                     }
                 }
 
