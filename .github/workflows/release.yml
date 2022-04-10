@@ -2,8 +2,8 @@ name: Release new version
 
 on:
   push:
-    branches: # TODO remove
-      - '*'
+  pull_request: # TODO remove
+    branches: [ main ]
     tags:
       - 'v*'
 
