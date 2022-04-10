@@ -37,7 +37,7 @@ jobs:
           if-no-files-found: error
           path: |
             app-android/build/outputs/apk/*/*.apk
-            app-desktop/build/compose/binaries/main/*/*.msi
+            app-desktop/build/compose/binaries/main/**
 
   build-macos:
     name: Build macOS distributions
@@ -64,7 +64,7 @@ jobs:
           name: packages
           if-no-files-found: error
           path: |
-            app-desktop/build/compose/binaries/main/*/*.dmg
+            app-desktop/build/compose/binaries/main/**
 
   build-windows:
     name: Build Windows distributions
@@ -88,4 +88,4 @@ jobs:
           name: packages
           if-no-files-found: error
           path: |
-            app-desktop/build/compose/binaries/main/*/*.msi
+            app-desktop/build/compose/binaries/main/**
