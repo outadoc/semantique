@@ -61,6 +61,10 @@ class MainViewModel(
 
     private suspend fun initializeDay(languageCode: String) {
         try {
+            _state.emit(
+                _state.value.copy(isLoading = true)
+            )
+
             val stats = api.getDayStats(languageCode = languageCode)
             val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
 
@@ -81,6 +85,7 @@ class MainViewModel(
                     isLoading = false,
                     dayStats = stats,
                     guessedWords = guessedWords,
+                    languageCode = languageCode,
                     neighbors = getNeighbors(
                         languageCode = languageCode,
                         winningWord = winningWord

@@ -14,7 +14,7 @@ class CemantixServer(private val client: HttpClient) {
     private fun getBaseUrl(languageCode: String) = when (languageCode) {
         Locale.FRENCH.language -> Url("https://cemantix.herokuapp.com")
         Locale.ENGLISH.language -> Url("https://cemantle.herokuapp.com")
-        else -> error("Unsupported locale")
+        else -> error("Unsupported language code: $languageCode")
     }
 
     suspend fun getDayStats(languageCode: String): DayStatsResponse =
