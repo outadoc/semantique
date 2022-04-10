@@ -2,8 +2,13 @@ package fr.outadoc.semantique.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import java.util.*
 
 @Composable
@@ -32,7 +37,10 @@ fun LanguagePicker(
                             onLanguageCodeSelected(language.languageCode)
                         }
                     ) {
-                        Text(text = "${language.emoji}  ${language.label}")
+                        Text(
+                            text = "${language.emoji}  ${language.label}",
+                            style = MaterialTheme.typography.body1
+                        )
                     }
                 }
         }
