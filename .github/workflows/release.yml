@@ -1,15 +1,13 @@
-name: Release new version
+name: Release
 
 on:
-  pull_request: # TODO remove
-    branches: [ main ]
   push:
     tags:
       - 'v*'
 
 jobs:
   build-linux:
-    name: Build Linux distributions
+    name: Build (Linux)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,14 +31,14 @@ jobs:
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: packages
           if-no-files-found: error
           path: |
             app-android/build/outputs/apk/*/*.apk
-            app-desktop/build/compose/binaries/main/**
+            app-desktop/build/compose/binaries/main/*/*.rpm
+            app-desktop/build/compose/binaries/main/*/*.deb
 
   build-macos:
-    name: Build macOS distributions
+    name: Build (macOS)
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -61,13 +59,12 @@ jobs:
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: packages
           if-no-files-found: error
           path: |
-            app-desktop/build/compose/binaries/main/**
+            app-desktop/build/compose/binaries/main/*/*.dmg
 
   build-windows:
-    name: Build Windows distributions
+    name: Build (Windows)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -85,7 +82,23 @@ jobs:
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: packages
           if-no-files-found: error
           path: |
-            app-desktop/build/compose/binaries/main/**
+            app-desktop/build/compose/binaries/main/*/*.msi
+
+  upload-release:
+    name: Upload
+    needs:
+      - build-linux
+      - build-macos
+      - build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          artifacts: "**"
