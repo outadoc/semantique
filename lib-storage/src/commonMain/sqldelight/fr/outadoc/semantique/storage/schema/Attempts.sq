@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS Attempt (
+    languageCode TEXT NOT NULL,
     dayNumber INTEGER NOT NULL,
     attemptNumber INTEGER AS Int NOT NULL,
     word TEXT NOT NULL,

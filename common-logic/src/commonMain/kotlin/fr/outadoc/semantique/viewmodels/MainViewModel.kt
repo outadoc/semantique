@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel(
     private val scope: CoroutineScope,
@@ -141,6 +142,7 @@ class MainViewModel(
                     guessedDayNumber?.let { dayNumber ->
                         storage.addAttempt(
                             Attempt(
+                                languageCode = Locale.FRENCH.language,
                                 dayNumber = dayNumber,
                                 attemptNumber = attemptNumber,
                                 word = score.word,
