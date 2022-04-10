@@ -13,10 +13,13 @@ class StorageImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : Storage {
 
-    override suspend fun getAttemptsForDay(dayNumber: Long): List<Attempt> =
+    override suspend fun getAttemptsForDay(languageCode: String, dayNumber: Long): List<Attempt> =
         withContext(ioDispatcher) {
             database.attemptsQueries
-                .getAllAttemptsForDay(dayNumber)
+                .getAllAttemptsForDay(
+                    languageCode = languageCode,
+                    dayNumber = dayNumber
+                )
                 .asFlow()
                 .mapToList()
                 .first()

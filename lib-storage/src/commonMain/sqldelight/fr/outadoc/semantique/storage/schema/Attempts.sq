@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Attempt (
 CREATE INDEX IF NOT EXISTS idx_attempt_day_number ON Attempt(dayNumber);
 
 getAllAttemptsForDay:
-SELECT * FROM Attempt WHERE dayNumber = ?;
+SELECT * FROM Attempt WHERE languageCode = ? AND dayNumber = ?;
 
 insertAttempt:
 INSERT OR REPLACE INTO Attempt VALUES ?;

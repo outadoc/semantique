@@ -75,7 +75,11 @@ class MainViewModel(
             )
 
             val stats = api.getDayStats(languageCode = languageCode)
-            val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
+
+            val previousAttempts = storage.getAttemptsForDay(
+                languageCode = languageCode,
+                dayNumber = stats.dayNumber
+            )
 
             val guessedWords = previousAttempts
                 .map { attempt ->
