@@ -61,7 +61,7 @@ class MainViewModel(
 
     private suspend fun initializeDay(languageCode: String) {
         try {
-            val stats = api.getDayStats()
+            val stats = api.getDayStats(languageCode = languageCode)
             val previousAttempts = storage.getAttemptsForDay(stats.dayNumber)
 
             val guessedWords = previousAttempts
@@ -81,7 +81,10 @@ class MainViewModel(
                     isLoading = false,
                     dayStats = stats,
                     guessedWords = guessedWords,
-                    neighbors = getNeighbors(winningWord),
+                    neighbors = getNeighbors(
+                        languageCode = languageCode,
+                        winningWord = winningWord
+                    ),
                     winningWord = winningWord
                 )
             )
@@ -130,7 +133,10 @@ class MainViewModel(
                         )
                     )
                 } else {
-                    val score = api.getScore(word = inputWord)
+                    val score = api.getScore(
+                        languageCode = currentState.languageCode,
+                        word = inputWord
+                    )
 
                     val lastAttemptNumber =
                         currentState.guessedWords.maxOfOrNull { word ->
@@ -175,7 +181,10 @@ class MainViewModel(
                             guessedWords = guessedWords,
                             latestAttempt = word,
                             winningWord = winningWord,
-                            neighbors = currentState.neighbors ?: getNeighbors(winningWord)
+                            neighbors = currentState.neighbors ?: getNeighbors(
+                                languageCode = currentState.languageCode,
+                                winningWord = winningWord
+                            )
                         )
                     )
 
@@ -214,9 +223,12 @@ class MainViewModel(
         }
     }
 
-    private suspend fun getNeighbors(winningWord: Word?): List<Word>? =
+    private suspend fun getNeighbors(languageCode: String, winningWord: Word?): List<Word>? =
         if (winningWord == null) null
-        else api.getNearby(winningWord.word).map { neighbor ->
+        else api.getNearby(
+            languageCode = languageCode,
+            word = winningWord.word
+        ).map { neighbor ->
             Word(
                 attemptNumber = null,
                 word = neighbor.word,

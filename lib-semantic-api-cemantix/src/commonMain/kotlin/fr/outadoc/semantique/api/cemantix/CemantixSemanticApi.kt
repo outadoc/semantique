@@ -3,23 +3,26 @@ package fr.outadoc.semantique.api.cemantix
 import fr.outadoc.cemantix.CemantixServer
 import fr.outadoc.cemantix.exception.CemantixApiException
 import fr.outadoc.cemantix.exception.CemantixInvalidTargetWordException
-import fr.outadoc.cemantix.model.*
+import fr.outadoc.cemantix.model.DayStatsResponse
+import fr.outadoc.cemantix.model.NearbyItem
+import fr.outadoc.cemantix.model.ScoreResponse
 import fr.outadoc.semantique.api.SemanticApi
-import fr.outadoc.semantique.api.model.WordScore
 import fr.outadoc.semantique.api.model.DayStats
+import fr.outadoc.semantique.api.model.WordScore
 import io.ktor.client.call.*
 
 class CemantixSemanticApi(private val cemantixServer: CemantixServer) : SemanticApi {
 
-    override suspend fun getDayStats(): DayStats =
-        cemantixServer.getDayStats().toStats()
+    override suspend fun getDayStats(languageCode: String): DayStats =
+        cemantixServer.getDayStats(languageCode = languageCode).toStats()
 
-    override suspend fun getScore(word: String): WordScore =
-        cemantixServer.getScore(word).toScore(word)
+    override suspend fun getScore(languageCode: String, word: String): WordScore =
+        cemantixServer.getScore(languageCode = languageCode, word = word).toScore(word)
 
-    override suspend fun getNearby(word: String): List<WordScore> =
+    override suspend fun getNearby(languageCode: String, word: String): List<WordScore> =
         try {
-            cemantixServer.getNearby(word).map { nearby -> nearby.toScore() }
+            cemantixServer.getNearby(languageCode = languageCode, word = word)
+                .map { nearby -> nearby.toScore() }
         } catch (e: NoTransformationFoundException) {
             throw CemantixInvalidTargetWordException(word)
         }
