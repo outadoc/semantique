@@ -18,9 +18,9 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
 
-                implementation(project(":common-ui"))
-                implementation(project(":lib-storage"))
-                implementation(project(":lib-semantic-api-cemantix"))
+                implementation(projects.commonUi)
+                implementation(projects.libStorage)
+                implementation(projects.libSemanticApiCemantix)
 
                 implementation("ch.qos.logback:logback-classic:1.2.11")
                 implementation("io.ktor:ktor-client-logging:1.6.8")

@@ -15,8 +15,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":lib-cemantix"))
-                api(project(":lib-semantic-api"))
+                api(projects.libCemantix)
+                api(projects.libSemanticApi)
 
                 implementation("io.ktor:ktor-client-core:1.6.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

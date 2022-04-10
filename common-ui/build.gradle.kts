@@ -24,8 +24,8 @@ kotlin {
                 api(compose.material)
                 implementation(compose.materialIconsExtended)
 
-                api(project(":common-logic"))
-                api(project(":lib-semantic-api"))
+                api(projects.commonLogic)
+                api(projects.libSemanticApi)
                 api("org.kodein.di:kodein-di-framework-compose:7.6.0")
             }
         }

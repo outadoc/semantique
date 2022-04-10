@@ -5,9 +5,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common-ui"))
-    implementation(project(":lib-storage"))
-    implementation(project(":lib-semantic-api-cemantix"))
+    implementation(projects.commonUi)
+    implementation(projects.libStorage)
+    implementation(projects.libSemanticApiCemantix)
 
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")

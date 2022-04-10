@@ -15,8 +15,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":lib-semantic-api"))
-                implementation(project(":lib-storage"))
+                api(projects.libSemanticApi)
+                implementation(projects.libStorage)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
             }
         }
