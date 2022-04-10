@@ -1,0 +1,91 @@
+name: Release new version
+
+on:
+  push:
+    branches: # TODO remove
+      - '*'
+    tags:
+      - 'v*'
+
+jobs:
+  build-linux:
+    name: Build Linux distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Android app
+        run: ./gradlew app-android:assembleRelease
+
+      - name: Build Linux app
+        run: ./gradlew app-desktop:packageDeb app-desktop:packageRpm
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          if-no-files-found: error
+          path: |
+            app-android/build/outputs/apk/*/*.apk
+            app-desktop/build/compose/binaries/main/*/*.msi
+
+  build-macos:
+    name: Build macOS distributions
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build macOS app
+        run: ./gradlew app-desktop:packageDmg
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          if-no-files-found: error
+          path: |
+            app-desktop/build/compose/binaries/main/*/*.dmg
+
+  build-windows:
+    name: Build Windows distributions
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Build Windows app
+        run: ./gradlew app-desktop:packageMsi
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          if-no-files-found: error
+          path: |
+            app-desktop/build/compose/binaries/main/*/*.msi
