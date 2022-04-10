@@ -17,7 +17,7 @@ kotlin {
             dependencies {
                 api(projects.libSemanticApi)
                 implementation(projects.libStorage)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation(libs.kotlinx.coroutines)
             }
         }
         val commonTest by getting {

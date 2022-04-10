@@ -23,10 +23,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("net.harawata:appdirs:1.2.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-                implementation("com.squareup.sqldelight:runtime:1.5.3")
-                implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
+                implementation(libs.appdirs)
+                implementation(libs.kotlinx.coroutines)
+                implementation(libs.sqldelight.runtime)
+                implementation(libs.sqldelight.coroutines)
             }
         }
         val commonTest by getting {
@@ -37,12 +37,12 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
+                implementation(libs.sqldelight.driver.sqlite)
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+                implementation(libs.sqldelight.driver.android)
             }
         }
     }

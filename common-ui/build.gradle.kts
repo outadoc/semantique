@@ -26,7 +26,7 @@ kotlin {
 
                 api(projects.commonLogic)
                 api(projects.libSemanticApi)
-                api("org.kodein.di:kodein-di-framework-compose:7.6.0")
+                api(libs.kodein)
             }
         }
         val commonTest by getting {
@@ -36,13 +36,13 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.4.1")
-                api("androidx.core:core-ktx:1.7.0")
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core)
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
+                implementation(libs.junit)
             }
         }
         val desktopMain by getting {

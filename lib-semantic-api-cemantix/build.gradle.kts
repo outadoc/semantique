@@ -18,8 +18,8 @@ kotlin {
                 api(projects.libCemantix)
                 api(projects.libSemanticApi)
 
-                implementation("io.ktor:ktor-client-core:1.6.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                implementation(libs.ktor.core)
+                implementation(libs.kotlinx.serialization)
             }
         }
         val commonTest by getting {

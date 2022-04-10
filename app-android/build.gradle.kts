@@ -9,10 +9,10 @@ dependencies {
     implementation(projects.libStorage)
     implementation(projects.libSemanticApiCemantix)
 
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.core:core-splashscreen:1.0.0-beta02")
-    implementation("io.ktor:ktor-client-serialization:1.6.8")
-    implementation("io.ktor:ktor-client-cio:1.6.8")
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.cio)
 }
 
 android {

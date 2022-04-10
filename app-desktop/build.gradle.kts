@@ -22,10 +22,10 @@ kotlin {
                 implementation(projects.libStorage)
                 implementation(projects.libSemanticApiCemantix)
 
-                implementation("ch.qos.logback:logback-classic:1.2.11")
-                implementation("io.ktor:ktor-client-logging:1.6.8")
-                implementation("io.ktor:ktor-client-serialization:1.6.8")
-                implementation("io.ktor:ktor-client-cio:1.6.8")
+                implementation(libs.logback)
+                implementation(libs.ktor.logging)
+                implementation(libs.ktor.serialization)
+                implementation(libs.ktor.cio)
             }
         }
         val jvmTest by getting
