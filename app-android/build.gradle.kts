@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":lib-semantic-api-cemantix"))
 
     implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.core:core-splashscreen:1.0.0-beta02")
     implementation("io.ktor:ktor-client-serialization:1.6.8")
     implementation("io.ktor:ktor-client-cio:1.6.8")
 }
