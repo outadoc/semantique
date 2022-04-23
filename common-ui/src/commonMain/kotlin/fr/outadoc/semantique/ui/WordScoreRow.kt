@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.ContentAlpha
@@ -34,13 +35,10 @@ fun WordScoreRow(
 ) {
     val fontWeight = if (emphasize) FontWeight.Bold else FontWeight.Normal
 
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
         RowLine(
             column1 = { modifier ->
-                Box(modifier = modifier) {
+                Box(modifier = modifier.alignByBaseline()) {
                     score.attemptNumber?.let { attemptNumber ->
                         Text(
                             modifier = Modifier
@@ -56,7 +54,9 @@ fun WordScoreRow(
             },
             column2 = { modifier ->
                 Text(
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier
+                        .alignByBaseline()
+                        .fillMaxWidth(),
                     text = score.word,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -66,7 +66,9 @@ fun WordScoreRow(
             },
             column3 = { modifier ->
                 Text(
-                    modifier = modifier.alpha(ContentAlpha.medium),
+                    modifier = modifier
+                        .alignByBaseline()
+                        .alpha(ContentAlpha.medium),
                     text = "%.2f".format(score.score * 100),
                     textAlign = TextAlign.End,
                     style = style,
@@ -93,6 +95,7 @@ fun WordScoreRow(
 
                     LinearProgressIndicator(
                         modifier = modifier
+                            .align(Alignment.CenterVertically)
                             .height(8.dp)
                             .fillMaxWidth(),
                         progress = progress.value
@@ -100,7 +103,9 @@ fun WordScoreRow(
                 },
                 column3 = { modifier ->
                     Text(
-                        modifier = modifier.fillMaxWidth(),
+                        modifier = modifier
+                            .alignByBaseline()
+                            .fillMaxWidth(),
                         text = "%,d ‰".format(percentile),
                         textAlign = TextAlign.End,
                         style = style,
@@ -115,17 +120,17 @@ fun WordScoreRow(
 @Composable
 private fun RowLine(
     modifier: Modifier = Modifier,
-    column1: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
-    column2: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
-    column3: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
+    column1: @Composable RowScope.(Modifier) -> Unit = { Box(modifier = it) },
+    column2: @Composable RowScope.(Modifier) -> Unit = { Box(modifier = it) },
+    column3: @Composable RowScope.(Modifier) -> Unit = { Box(modifier = it) }
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        column1(Modifier.weight(0.1f).alignByBaseline())
-        column2(Modifier.weight(0.7f).alignByBaseline())
-        column3(Modifier.weight(0.2f).alignByBaseline())
+        column1(Modifier.weight(0.1f))
+        column2(Modifier.weight(0.7f))
+        column3(Modifier.weight(0.2f))
     }
 }
