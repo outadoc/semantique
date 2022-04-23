@@ -1,3 +1,5 @@
 package fr.outadoc.cemantix.exception
 
-class CemantixApiException(htmlMessage: String) : Exception(htmlMessage)
+import fr.outadoc.cemantix.stripTags
+
+class CemantixApiException(htmlMessage: String) : Exception(htmlMessage.stripTags())
