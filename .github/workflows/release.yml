@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew app-android:assembleRelease
 
       - name: Sign Android app
-        uses: Tlaster/android-sign@v1.2.2
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app-android/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
