@@ -71,7 +71,10 @@ class MainViewModel(
     private suspend fun initializeDay(languageCode: String) {
         try {
             _state.emit(
-                _state.value.copy(isLoading = true)
+                State(
+                    isLoading = true,
+                    languageCode = languageCode
+                )
             )
 
             val stats = api.getDayStats(languageCode = languageCode)
