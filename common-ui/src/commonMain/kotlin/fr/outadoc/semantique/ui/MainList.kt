@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fr.outadoc.semantique.ui.strings.stringResource
 import fr.outadoc.semantique.ui.util.AnimatedNullability
 import fr.outadoc.semantique.viewmodels.MainViewModel
 
@@ -64,7 +65,7 @@ fun MainList(
                 Card(modifier = Modifier.padding(bottom = 8.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            "Tentative précédente",
+                            stringResource(MR.strings.lastAttempt),
                             style = MaterialTheme.typography.subtitle2,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )

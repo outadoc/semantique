@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fr.outadoc.semantique.ui.strings.stringResource
 import fr.outadoc.semantique.viewmodels.MainViewModel
 import java.util.*
 
@@ -35,7 +36,7 @@ fun MainScreenContent(
                     IconButton(onClick = onHelpButtonClicked) {
                         Icon(
                             Icons.Default.Help,
-                            contentDescription = "Informations sur le jeu"
+                            contentDescription = stringResource(MR.strings.help_cd)
                         )
                     }
 
@@ -48,7 +49,9 @@ fun MainScreenContent(
                         )
                     )
                 },
-                title = { Text("Sémantique") }
+                title = {
+                    Text(text = stringResource(MR.strings.app_title))
+                }
             )
         }
     ) { padding ->

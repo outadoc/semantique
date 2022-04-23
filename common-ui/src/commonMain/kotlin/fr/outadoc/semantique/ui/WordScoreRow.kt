@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.model.Word
+import fr.outadoc.semantique.ui.strings.stringResource
 
 @Composable
 fun WordScoreRow(
@@ -44,7 +45,7 @@ fun WordScoreRow(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .alpha(ContentAlpha.medium),
-                            text = "%,d".format(attemptNumber),
+                            text = stringResource(MR.strings.row_attemptNumber, attemptNumber),
                             textAlign = TextAlign.End,
                             style = style,
                             fontWeight = fontWeight
@@ -69,7 +70,7 @@ fun WordScoreRow(
                     modifier = modifier
                         .alignByBaseline()
                         .alpha(ContentAlpha.medium),
-                    text = "%.2f".format(score.score * 100),
+                    text = stringResource(MR.strings.row_score, score.score * 100),
                     textAlign = TextAlign.End,
                     style = style,
                     fontWeight = fontWeight
@@ -106,7 +107,7 @@ fun WordScoreRow(
                         modifier = modifier
                             .alignByBaseline()
                             .fillMaxWidth(),
-                        text = "%,d ‰".format(percentile),
+                        text = stringResource(MR.strings.row_percentile, percentile),
                         textAlign = TextAlign.End,
                         style = style,
                         fontWeight = fontWeight

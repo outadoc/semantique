@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import fr.outadoc.semantique.ui.strings.stringResource
 import fr.outadoc.semantique.ui.util.AnimatedNullability
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -42,7 +43,7 @@ fun WordInput(
                         } else false
                     },
                 value = currentInputWord,
-                label = { Text("Devinez le mot secret") },
+                label = { Text(stringResource(MR.strings.input_prompt)) },
                 onValueChange = onInputChanged,
                 readOnly = isLoading,
                 isError = errorMessage != null,
@@ -72,7 +73,7 @@ fun WordInput(
                 } else {
                     Icon(
                         Icons.Default.Psychology,
-                        contentDescription = "Deviner ce mot"
+                        contentDescription = stringResource(MR.strings.input_submit)
                     )
                 }
             }

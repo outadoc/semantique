@@ -2,8 +2,9 @@ import org.jetbrains.compose.compose
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.1.1"
+    id("org.jetbrains.compose")
     id("com.android.library")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 kotlin {
@@ -27,6 +28,8 @@ kotlin {
                 api(projects.commonLogic)
                 api(projects.libSemanticApi)
                 api(libs.kodein)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resourcesCompose)
             }
         }
         val commonTest by getting {
@@ -67,4 +70,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "fr.outadoc.semantique.ui"
 }

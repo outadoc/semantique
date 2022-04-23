@@ -8,18 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.api.model.DayStats
+import fr.outadoc.semantique.ui.strings.stringResource
 
 @Composable
 fun StatsHeader(modifier: Modifier = Modifier, dayStats: DayStats) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(bottom = 4.dp),
-            text = "Jour n°%d".format(dayStats.dayNumber),
+            text = stringResource(MR.strings.header_day, dayStats.dayNumber),
             style = MaterialTheme.typography.h5
         )
 
         Text(
-            "%,d personnes ont trouvé le mot du jour.".format(dayStats.solverCount),
+            text = stringResource(MR.strings.header_winners, dayStats.solverCount),
             style = MaterialTheme.typography.subtitle1
         )
     }

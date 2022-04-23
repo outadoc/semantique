@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">Cemantle</string>
+    <string name="lastAttempt">Last attempt</string>
+    <string name="help_cd">Information about the game</string>
+    <string name="header_day">Day #%d</string>
+    <string name="header_winners">%,d people have found today\'s word.</string>
+    <string name="win_congrats">Congratulations! 🎉</string>
+    <string name="win_title1">You have found today\'s word,</string>
+    <string name="win_title2">, in </string>
+    <string name="win_title3">%,d tries!</string>
+    <string name="win_showNeighbors">See the closest words</string>
+    <string name="input_prompt">Guess the secret word</string>
+    <string name="input_submit">Guess this word</string>
+    <string name="row_attemptNumber">%,d</string>
+    <string name="row_score">%.2f</string>
+    <string name="row_percentile">%,d ‰</string>
+</resources>

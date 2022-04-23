@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.model.Word
+import fr.outadoc.semantique.ui.strings.stringResource
 
 @Composable
 fun WinBanner(
@@ -38,20 +39,27 @@ fun WinBanner(
         ) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = "Bravo ! \uD83C\uDF89",
+                text = stringResource(MR.strings.win_congrats),
                 style = MaterialTheme.typography.h5
             )
 
             Text(
                 modifier = Modifier.padding(bottom = 4.dp),
                 text = buildAnnotatedString {
-                    append("Vous avez trouvé le mot du jour, ")
+                    append(stringResource(MR.strings.win_title1))
+                    append(" ")
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(winningWord.word)
                     }
-                    append(", en ")
+                    append(stringResource(MR.strings.win_title2))
+                    append(" ")
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("${winningWord.attemptNumber} coup(s) !")
+                        append(
+                            stringResource(
+                                MR.strings.win_title3,
+                                winningWord.attemptNumber ?: 0
+                            )
+                        )
                     }
                 },
                 style = MaterialTheme.typography.subtitle1
@@ -74,7 +82,7 @@ fun WinBanner(
                     onCheckedChange = null
                 )
 
-                Text("Voir les mots les plus proches")
+                Text(stringResource(MR.strings.win_showNeighbors))
             }
         }
     }

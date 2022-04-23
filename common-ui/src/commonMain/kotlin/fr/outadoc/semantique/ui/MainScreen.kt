@@ -1,11 +1,13 @@
 package fr.outadoc.semantique.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import fr.outadoc.semantique.ui.strings.LocalLanguageCode
 import fr.outadoc.semantique.viewmodels.MainViewModel
 import kotlinx.coroutines.flow.collect
 import org.kodein.di.compose.instance
@@ -31,13 +33,15 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }
     }
 
-    MainScreenContent(
-        modifier = modifier,
-        state = state,
-        onHelpButtonClicked = viewModel::onHelpButtonClicked,
-        onLanguageCodeSelected = viewModel::onLanguageCodeSelected,
-        onInputChanged = viewModel::onInputChanged,
-        onGuessWordClicked = viewModel::onGuessWordClicked,
-        onDisplayNeighborsToggled = viewModel::onDisplayNeighborsToggled
-    )
+    CompositionLocalProvider(LocalLanguageCode provides state.languageCode) {
+        MainScreenContent(
+            modifier = modifier,
+            state = state,
+            onHelpButtonClicked = viewModel::onHelpButtonClicked,
+            onLanguageCodeSelected = viewModel::onLanguageCodeSelected,
+            onInputChanged = viewModel::onInputChanged,
+            onGuessWordClicked = viewModel::onGuessWordClicked,
+            onDisplayNeighborsToggled = viewModel::onDisplayNeighborsToggled
+        )
+    }
 }

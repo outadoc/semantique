@@ -13,6 +13,8 @@ buildscript {
 plugins {
     kotlin("plugin.serialization") version "1.6.10" apply false
     kotlin("multiplatform") version "1.6.10" apply false
+    id("org.jetbrains.compose") version "1.1.1" apply false
+    id("dev.icerock.mobile.multiplatform-resources") version "0.19.0" apply false
 }
 
 allprojects {

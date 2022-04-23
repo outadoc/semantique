@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">Cémantix</string>
+    <string name="lastAttempt">Tentative précédente</string>
+    <string name="help_cd">Informations sur le jeu</string>
+    <string name="header_day">Jour n°%d</string>
+    <string name="header_winners">%,d personnes ont trouvé le mot du jour.</string>
+    <string name="win_congrats">Bravo ! 🎉</string>
+    <string name="win_title1">Vous avez trouvé le mot du jour,</string>
+    <string name="win_title2">, en</string>
+    <string name="win_title3">%,d coup(s) !</string>
+    <string name="win_showNeighbors">Voir les mots les plus proches</string>
+    <string name="input_prompt">Devinez le mot secret</string>
+    <string name="input_submit">Deviner ce mot</string>
+    <string name="row_attemptNumber">%,d</string>
+    <string name="row_score">%.2f</string>
+    <string name="row_percentile">%,d ‰</string>
+</resources>
