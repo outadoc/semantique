@@ -33,9 +33,8 @@ jobs:
         with:
           releaseDirectory: app-android/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          output: build/release/signed
-          alias: key0
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          alias: key0
           keyPassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
 
       - name: Build Linux app
