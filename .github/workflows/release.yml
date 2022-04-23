@@ -46,7 +46,7 @@ jobs:
         with:
           if-no-files-found: error
           path: |
-            app-android/build/signed/*.apk
+            app-android/build/outputs/apk/*/*-signed.apk
             app-desktop/build/compose/binaries/main/*/*.rpm
             app-desktop/build/compose/binaries/main/*/*.deb
 
