@@ -3,8 +3,13 @@ package fr.outadoc.semantique.ui
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,52 +33,52 @@ fun WordScoreRow(
     emphasize: Boolean = false
 ) {
     val fontWeight = if (emphasize) FontWeight.Bold else FontWeight.Normal
-    SelectionContainer {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(0.1f)
-                    .alignByBaseline()
-            ) {
-                score.attemptNumber?.let { attemptNumber ->
-                    Text(
-                        modifier = Modifier,
-                        text = "%,d".format(attemptNumber),
-                        textAlign = TextAlign.End,
-                        style = style,
-                        fontWeight = fontWeight
-                    )
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        RowLine(
+            column1 = { modifier ->
+                Box(modifier = modifier) {
+                    score.attemptNumber?.let { attemptNumber ->
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .alpha(ContentAlpha.medium),
+                            text = "%,d".format(attemptNumber),
+                            textAlign = TextAlign.End,
+                            style = style,
+                            fontWeight = fontWeight
+                        )
+                    }
                 }
+            },
+            column2 = { modifier ->
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = score.word,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = style,
+                    fontWeight = fontWeight
+                )
+            },
+            column3 = { modifier ->
+                Text(
+                    modifier = modifier.alpha(ContentAlpha.medium),
+                    text = "%.2f".format(score.score * 100),
+                    textAlign = TextAlign.End,
+                    style = style,
+                    fontWeight = fontWeight
+                )
             }
+        )
 
-            Text(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .alignByBaseline(),
-                text = score.word,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = style,
-                fontWeight = fontWeight
-            )
-
-            Text(
-                modifier = Modifier
-                    .weight(0.2f)
-                    .alignByBaseline(),
-                text = "%.2f".format(score.score * 100),
-                textAlign = TextAlign.End,
-                style = style,
-                fontWeight = fontWeight
-            )
-
-            Box(modifier = Modifier.weight(0.25f)) {
-                val percentile = score.percentile
-                if (percentile != null && score.attemptNumber != null) {
+        val percentile = score.percentile
+        if (percentile != null && score.attemptNumber != null) {
+            RowLine(
+                column2 = { modifier ->
                     val progress = remember { Animatable(0f) }
                     LaunchedEffect(score) {
                         progress.animateTo(
@@ -86,29 +92,40 @@ fun WordScoreRow(
                     }
 
                     LinearProgressIndicator(
-                        modifier = Modifier
-                            .height(10.dp)
+                        modifier = modifier
+                            .height(8.dp)
                             .fillMaxWidth(),
                         progress = progress.value
                     )
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .weight(0.2f)
-                    .alignByBaseline()
-            ) {
-                score.percentile?.let { percentile ->
+                },
+                column3 = { modifier ->
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         text = "%,d ‰".format(percentile),
                         textAlign = TextAlign.End,
                         style = style,
                         fontWeight = fontWeight
                     )
                 }
-            }
+            )
         }
+    }
+}
+
+@Composable
+private fun RowLine(
+    modifier: Modifier = Modifier,
+    column1: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
+    column2: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
+    column3: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) },
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        column1(Modifier.weight(0.1f).alignByBaseline())
+        column2(Modifier.weight(0.7f).alignByBaseline())
+        column3(Modifier.weight(0.2f).alignByBaseline())
     }
 }
