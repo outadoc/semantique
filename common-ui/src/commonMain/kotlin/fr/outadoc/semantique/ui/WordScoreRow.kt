@@ -79,7 +79,7 @@ fun WordScoreRow(
         )
 
         val percentile = score.percentile
-        if (percentile != null && score.attemptNumber != null) {
+        if (percentile != null) {
             RowLine(
                 column2 = { modifier ->
                     val progress = remember { Animatable(0f) }
@@ -94,13 +94,16 @@ fun WordScoreRow(
                         )
                     }
 
-                    LinearProgressIndicator(
-                        modifier = modifier
-                            .align(Alignment.CenterVertically)
-                            .height(8.dp)
-                            .fillMaxWidth(),
-                        progress = progress.value
-                    )
+                    // Don't display progress if part of the neighbors list
+                    if (score.attemptNumber != null) {
+                        LinearProgressIndicator(
+                            modifier = modifier
+                                .align(Alignment.CenterVertically)
+                                .height(8.dp)
+                                .fillMaxWidth(),
+                            progress = progress.value
+                        )
+                    }
                 },
                 column3 = { modifier ->
                     Text(
@@ -131,7 +134,7 @@ private fun RowLine(
         verticalAlignment = Alignment.CenterVertically
     ) {
         column1(Modifier.weight(0.1f))
-        column2(Modifier.weight(0.7f))
-        column3(Modifier.weight(0.2f))
+        column2(Modifier.weight(0.65f))
+        column3(Modifier.weight(0.25f))
     }
 }
