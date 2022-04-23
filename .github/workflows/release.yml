@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*'
+  pull_request:
+    branches:
+      - *
 
 jobs:
   build-linux:
@@ -25,6 +28,16 @@ jobs:
       - name: Build Android app
         run: ./gradlew app-android:assembleRelease
 
+      - name: Sign app APK
+        uses: Tlaster/android-sign@v1.2.2
+        with:
+          releaseDirectory: app-android/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          output: build/release/signed
+          alias: key0
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+
       - name: Build Linux app
         run: ./gradlew app-desktop:packageDeb app-desktop:packageRpm
 
@@ -33,7 +46,7 @@ jobs:
         with:
           if-no-files-found: error
           path: |
-            app-android/build/outputs/apk/*/*.apk
+            app-android/build/signed/*.apk
             app-desktop/build/compose/binaries/main/*/*.rpm
             app-desktop/build/compose/binaries/main/*/*.deb
 
@@ -85,20 +98,3 @@ jobs:
           if-no-files-found: error
           path: |
             app-desktop/build/compose/binaries/main/*/*.msi
-
-  upload-release:
-    name: Upload
-    needs:
-      - build-linux
-      - build-macos
-      - build-windows
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-
-      - uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generateReleaseNotes: true
-          artifacts: "**"
