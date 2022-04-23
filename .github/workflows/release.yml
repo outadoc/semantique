@@ -1,4 +1,4 @@
-name: Release
+name: Release new version
 
 on:
   push:
@@ -25,6 +25,15 @@ jobs:
       - name: Build Android app
         run: ./gradlew app-android:assembleRelease
 
+      - name: Sign Android app
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app-android/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          alias: key0
+          keyPassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+
       - name: Build Linux app
         run: ./gradlew app-desktop:packageDeb app-desktop:packageRpm
 
@@ -33,7 +42,7 @@ jobs:
         with:
           if-no-files-found: error
           path: |
-            app-android/build/outputs/apk/*/*.apk
+            app-android/build/outputs/apk/*/*-signed.apk
             app-desktop/build/compose/binaries/main/*/*.rpm
             app-desktop/build/compose/binaries/main/*/*.deb
 
