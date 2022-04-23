@@ -44,7 +44,7 @@ fun WordInput(
                 value = currentInputWord,
                 label = { Text("Devinez le mot secret") },
                 onValueChange = onInputChanged,
-                enabled = !isLoading,
+                readOnly = isLoading,
                 isError = errorMessage != null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
