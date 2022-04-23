@@ -1,9 +1,12 @@
-name: Release new version
+name: Release
 
 on:
   push:
     tags:
       - 'v*'
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build-linux:
@@ -95,20 +98,3 @@ jobs:
           if-no-files-found: error
           path: |
             app-desktop/build/compose/binaries/main/*/*.msi
-
-  upload-release:
-    name: Upload
-    needs:
-      - build-linux
-      - build-macos
-      - build-windows
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-
-      - uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generateReleaseNotes: true
-          artifacts: "**"
