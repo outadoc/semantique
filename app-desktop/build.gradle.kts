@@ -45,9 +45,10 @@ compose.desktop {
                 TargetFormat.Rpm
             )
 
+
             packageName = "Semantique"
-            version = "1.0.0"
-            packageVersion = "1.0.0"
+            version = project.version as String
+            packageVersion = project.version as String
             copyright = "© 2022 Baptiste Candellier"
             vendor = "Baptiste Candellier"
 

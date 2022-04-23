@@ -21,8 +21,8 @@ android {
         applicationId = "fr.outadoc.semantique.android"
         minSdk = 24
         targetSdk = 31
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = project.ext["versionCode"] as Int
+        versionName = version as String
     }
 
     packagingOptions {

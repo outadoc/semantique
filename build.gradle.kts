@@ -19,7 +19,8 @@ plugins {
 
 allprojects {
     group = "fr.outadoc"
-    version = "1.0"
+    version = properties["fr.outadoc.semantique.versionName"] as String
+    ext["versionCode"] = (properties["fr.outadoc.semantique.versionCode"] as String).toInt()
 
     repositories {
         google()
