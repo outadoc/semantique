@@ -13,7 +13,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 @Composable
 actual fun stringResource(resource: StringResource): String {
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource) {
         setLocale(languageCode)
         StringDesc.Resource(resource).localized()
     }
@@ -22,7 +22,7 @@ actual fun stringResource(resource: StringResource): String {
 @Composable
 actual fun stringResource(resource: StringResource, vararg args: Any): String {
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, args) {
         setLocale(languageCode)
         StringDesc.ResourceFormatted(resource, *args).localized()
     }
@@ -31,7 +31,7 @@ actual fun stringResource(resource: StringResource, vararg args: Any): String {
 @Composable
 actual fun stringResource(resource: PluralsResource, quantity: Int): String {
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, quantity) {
         setLocale(languageCode)
         StringDesc.Plural(resource, quantity).localized()
     }
@@ -40,7 +40,7 @@ actual fun stringResource(resource: PluralsResource, quantity: Int): String {
 @Composable
 actual fun stringResource(resource: PluralsResource, quantity: Int, vararg args: Any): String {
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, quantity, args) {
         setLocale(languageCode)
         StringDesc.PluralFormatted(resource, quantity, *args).localized()
     }

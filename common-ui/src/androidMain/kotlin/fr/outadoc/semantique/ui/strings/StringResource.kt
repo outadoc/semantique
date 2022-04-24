@@ -15,7 +15,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 actual fun stringResource(resource: StringResource): String {
     val context = LocalContext.current
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource) {
         setLocale(languageCode)
         StringDesc.Resource(resource).toString(context)
     }
@@ -25,7 +25,7 @@ actual fun stringResource(resource: StringResource): String {
 actual fun stringResource(resource: StringResource, vararg args: Any): String {
     val context = LocalContext.current
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, args) {
         setLocale(languageCode)
         StringDesc.ResourceFormatted(resource, *args).toString(context)
     }
@@ -35,7 +35,7 @@ actual fun stringResource(resource: StringResource, vararg args: Any): String {
 actual fun stringResource(resource: PluralsResource, quantity: Int): String {
     val context = LocalContext.current
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, quantity) {
         setLocale(languageCode)
         StringDesc.Plural(resource, quantity).toString(context)
     }
@@ -45,7 +45,7 @@ actual fun stringResource(resource: PluralsResource, quantity: Int): String {
 actual fun stringResource(resource: PluralsResource, quantity: Int, vararg args: Any): String {
     val context = LocalContext.current
     val languageCode = LocalLanguageCode.current
-    return remember(languageCode) {
+    return remember(languageCode, resource, quantity, args) {
         setLocale(languageCode)
         StringDesc.PluralFormatted(resource, quantity, *args).toString(context)
     }
