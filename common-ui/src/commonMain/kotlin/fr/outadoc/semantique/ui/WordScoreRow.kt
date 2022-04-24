@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.outadoc.semantique.model.Word
 import fr.outadoc.semantique.ui.strings.stringResource
+import fr.outadoc.semantique.ui.util.percentileToEmoji
 
 @Composable
 fun WordScoreRow(
@@ -39,16 +41,24 @@ fun WordScoreRow(
     Column(modifier = modifier.fillMaxWidth()) {
         RowLine(
             column1 = { modifier ->
-                Box(modifier = modifier.alignByBaseline()) {
+                Row(
+                    modifier = modifier.alignByBaseline(),
+                    horizontalArrangement = Arrangement.End
+                ) {
                     score.attemptNumber?.let { attemptNumber ->
                         Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .alpha(ContentAlpha.medium),
+                            modifier = Modifier.alpha(ContentAlpha.medium),
                             text = stringResource(MR.strings.row_attemptNumber, attemptNumber),
                             textAlign = TextAlign.End,
                             style = style,
                             fontWeight = fontWeight
+                        )
+
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = score.percentile.percentileToEmoji(),
+                            textAlign = TextAlign.End,
+                            style = style
                         )
                     }
                 }
@@ -133,8 +143,8 @@ private fun RowLine(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        column1(Modifier.weight(0.1f))
-        column2(Modifier.weight(0.65f))
+        column1(Modifier.weight(0.2f))
+        column2(Modifier.weight(0.55f))
         column3(Modifier.weight(0.25f))
     }
 }
